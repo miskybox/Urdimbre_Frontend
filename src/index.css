@@ -1,0 +1,18 @@
+:root {
+  --primary-color: #007bff;
+  --success-color: #28a745;
+  --error-color: #d93025;
+  --bg-color: #ffffff;
+  --input-border: #ccc;
+  --text-color: #333;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+  --font-size-base: 1rem;
+  --font-size-sm: 0.875rem;
+}
+body {
+  font-family: Arial, sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  margin: 0;
+  padding: 0;
+}

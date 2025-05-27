@@ -1,12 +1,13 @@
-import './App.css';
+import { Routes, Route } from 'react-router-dom';
+import LoginPage from './pages/login/LoginPage';
+import RegisterPage from './pages/register/RegisterPage';
 
 function App() {
   return (
-    <>
-      <h1 className="h1">Urdimbre</h1>
-      <p className="p">...en construcción</p>
-    </>
+    <Routes>
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/register" element={<RegisterPage />} />
+    </Routes>
   );
 }
-
 export default App;

@@ -1,0 +1,61 @@
+:root {
+  --primary-color: #007bff;
+  --success-color: #28a745;
+  --error-color: #d93025;
+  --bg-color: #ffffff;
+  --input-border: #ccc;
+  --text-color: #333;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+  --font-size-base: 1rem;
+  --font-size-sm: 0.875rem;
+}
+
+.formContainer {
+  background: var(--bg-color);
+  padding: 2rem;
+  border-radius: 8px;
+  max-width: 500px;
+  margin: 2rem auto;
+  box-shadow: 0 0 10px var(--shadow-color);
+  color: var(--text-color);
+}
+
+.title {
+  font-size: 1.8rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 0.25rem;
+}
+
+.input {
+  width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  border: 1px solid var(--input-border);
+  border-radius: 4px;
+  font-size: var(--font-size-base);
+}
+
+.button {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: var(--success-color);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: var(--font-size-base);
+  cursor: pointer;
+}
+
+.error {
+  color: var(--error-color);
+  font-size: var(--font-size-sm);
+  margin-top: -0.5rem;
+  margin-bottom: 0.75rem;
+}
