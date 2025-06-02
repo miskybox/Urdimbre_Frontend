@@ -1,61 +1,149 @@
-:root {
-  --primary-color: #007bff;
-  --success-color: #28a745;
-  --error-color: #d93025;
-  --bg-color: #ffffff;
-  --input-border: #ccc;
-  --text-color: #333;
-  --shadow-color: rgba(0, 0, 0, 0.1);
-  --font-size-base: 1rem;
-  --font-size-sm: 0.875rem;
-}
-
 .formContainer {
   background: var(--bg-color);
-  padding: 2rem;
-  border-radius: 8px;
-  max-width: 500px;
-  margin: 2rem auto;
+  border-radius: 1rem;
   box-shadow: 0 0 10px var(--shadow-color);
-  color: var(--text-color);
+  padding: 2rem 1.5rem;
+  max-width: 85%;
+  width: 100%;
+  margin: 2rem auto;
+  box-sizing: border-box;
 }
 
+
+
 .title {
-  font-size: 1.8rem;
-  font-weight: bold;
+  font-size: 2.5rem;
+  font-weight: 700;
   text-align: center;
   margin-bottom: 1.5rem;
+  color: var(--text-color);
+  font-style: bold;
 }
 
 .label {
   display: block;
-  font-weight: bold;
-  margin-bottom: 0.25rem;
+  margin: 1rem 0 0.5rem;
+  font-weight: 500;
+  color: var(--text-color);
 }
 
 .input {
   width: 100%;
-  padding: 0.5rem;
-  margin-bottom: 1rem;
-  border: 1px solid var(--input-border);
-  border-radius: 4px;
+  padding: 0.75rem 1rem;
+  border: 2px solid var(--input-border);
+  border-radius: 0.5rem;
   font-size: var(--font-size-base);
+  outline: none;
+  transition: border 0.2s ease;
+  box-sizing: border-box;
 }
 
-.button {
-  width: 100%;
-  padding: 0.75rem;
-  background-color: var(--success-color);
-  color: white;
-  border: none;
-  border-radius: 4px;
-  font-size: var(--font-size-base);
-  cursor: pointer;
+.input:focus {
+  outline: var(--focus-outline);
+}
+
+.input::placeholder {
+  color: #999;
+}
+
+.hint {
+  font-size: var(--font-size-sm);
+  color: #666;
+  margin-top: 0.25rem;
+  margin-bottom: 0.75rem;
 }
 
 .error {
   color: var(--error-color);
   font-size: var(--font-size-sm);
-  margin-top: -0.5rem;
-  margin-bottom: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+.pronounGroup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  margin-top: 0.3rem;
+  justify-content: flex-start;
+}
+
+.pronounButton {
+  flex: 1 1 30%;
+  padding: 0.5rem;
+  background-color: #f6f6f6;
+  border: 2px solid #222;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  text-align: center;
+}
+
+.pronounButton:hover {
+  background-color: #e0e0e0;
+}
+
+.selected {
+  background-color: #e9d8fd;
+  border-color: var(--input-border);
+}
+.inputGroup {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.toggleButton {
+  position: absolute;
+  right: 3rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 1.25rem;
+  color: #555;
+  padding: 0;
+}
+
+.toggleButton:focus {
+  outline: var(--focus-outline);
+}
+
+
+.buttonContainer {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+.button {
+  flex: 1 1 45%;
+  padding: 0.75rem 1rem;
+  font-size: var(--font-size-base);
+  font-weight: bold;
+  border-radius: 12px;
+  cursor: pointer;
+  border: 2px solid black;
+  text-align: center;
+  transition: background-color 0.3s ease;
+}
+
+.cancelButton {
+  background-color: var(--primary-color);
+  color: black;
+}
+
+.cancelButton:hover {
+  background-color: #dfb6d3;
+}
+
+.createButton {
+  background-color: var(--secondary-color);
+  color: black;
+}
+
+.createButton:hover {
+  background-color: #74bdf1;
 }

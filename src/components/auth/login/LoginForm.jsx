@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import useAuth from '../../../hooks/useAuth.js';
 import { toast } from 'react-hot-toast';
 import styles from './LoginForm.module.css';
@@ -15,14 +15,24 @@ const LoginForm = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    const sanitizedValue = value.replace(/[<>"']/g, '');
+    setFormData({ ...formData, [name]: sanitizedValue });
     if (errors[name]) setErrors({ ...errors, [name]: '' });
   };
 
   const validateForm = () => {
     const newErrors = {};
-    if (!formData.username.trim()) newErrors.username = 'El nombre de usuarie es obligatorio';
-    if (!formData.password) newErrors.password = 'La contraseña es obligatoria';
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s]).{8,}$/;
+
+    if (!formData.username.trim()) {
+      newErrors.username = 'El email es obligatorio';
+    }
+
+    if (!formData.password || !passwordRegex.test(formData.password)) {
+      newErrors.password =
+        'La contraseña debe tener al menos 8 caracteres, con mayúsculas, minúsculas, números y un símbolo.';
+    }
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -38,7 +48,7 @@ const LoginForm = () => {
     } catch (error) {
       const status = error.response?.status;
       if (status === 401) {
-        setErrors({ auth: 'Usuarie o contraseña incorrectos' });
+        setErrors({ auth: 'Email o contraseña incorrectos' });
       } else {
         toast.error(error.response?.data?.message || 'Error al iniciar sesión');
       }
@@ -49,45 +59,76 @@ const LoginForm = () => {
 
   return (
     <div className={styles.formContainer}>
-      <h2 className={styles.title}>Iniciar Sesión</h2>
-      <form onSubmit={handleSubmit}>
+      <img src="/logo/urdimbreLogo.png" alt="Logo de Urdimbre" className={styles.logo} />
+     <h2 className={styles.welcome}>¡Bienvenide, estás en casa!</h2>
+      <form onSubmit={handleSubmit} autoComplete="off">
         {errors.auth && <div className={styles.error}>{errors.auth}</div>}
 
-        <label className={styles.label} htmlFor="username">Usuarie</label>
+        <label className={styles.label} htmlFor="username">Email</label>
         <input
           id="username"
           name="username"
-          type="text"
+          type="email"
+          placeholder="Introduce tu email"
           className={styles.input}
           value={formData.username}
           onChange={handleChange}
+          autoComplete="email"
+          required
           disabled={isSubmitting}
         />
+        <p className={styles.hint}>Tu email está seguro con nosotres.</p>
         {errors.username && <p className={styles.error}>{errors.username}</p>}
 
         <label className={styles.label} htmlFor="password">Contraseña</label>
-        <input
-          id="password"
-          name="password"
-          type={showPassword ? 'text' : 'password'}
-          className={styles.input}
-          value={formData.password}
-          onChange={handleChange}
-          disabled={isSubmitting}
-        />
-        <button type="button" onClick={() => setShowPassword(!showPassword)}>
-          {showPassword ? '🙈' : '👁️'}
-        </button>
+        <div className={styles.passwordContainer}>
+          <input
+            id="password"
+            name="password"
+            type={showPassword ? 'text' : 'password'}
+            placeholder="Introduce tu contraseña"
+            className={styles.input}
+            value={formData.password}
+            onChange={handleChange}
+            autoComplete="current-password"
+            minLength={8}
+            required
+            disabled={isSubmitting}
+          />
+          <button
+            type="button"
+            className={styles.togglePassword}
+            onClick={() => setShowPassword(!showPassword)}
+            aria-label={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
+            title={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
+          >
+            {showPassword ? '🙈' : '👁️'}
+          </button>
+        </div>
+
+        <p className={styles.hint}>
+          Usa al menos 8 caracteres, con mayúsculas, minúsculas, números y al menos un símbolo.
+        </p>
         {errors.password && <p className={styles.error}>{errors.password}</p>}
 
-        <button type="submit" className={styles.button} disabled={isSubmitting}>
-          {isSubmitting ? 'Iniciando...' : 'Iniciar Sesión'}
-        </button>
-      </form>
+        <div className={styles.buttonContainer}>
+          <button
+            type="button"
+            className={`${styles.button} ${styles.createButton}`}
+            onClick={() => navigate('/register')}
+          >
+            Crear Cuenta
+          </button>
 
-      <div className={styles.textCenter}>
-        ¿No tienes cuenta? <Link to="/register">Regístrate</Link>
-      </div>
+          <button
+            type="submit"
+            className={`${styles.button} ${styles.loginButton}`}
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? 'Iniciando...' : 'Iniciar Sesión'}
+          </button>
+        </div>
+      </form>
     </div>
   );
 };
