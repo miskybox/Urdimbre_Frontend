@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import MainLayout from "../mainLayout/MainLayout";
+import MainLayout from "../../components/mainLayout/MainLayout";
 import "./Home.css";
 import logo from "/assets/logo-urdimbre-final.png";
 
