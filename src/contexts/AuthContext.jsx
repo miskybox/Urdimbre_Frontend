@@ -1,126 +1,118 @@
-import { createContext, useState, useEffect, useMemo } from 'react'
-import PropTypes from 'prop-types'
-import authService from '../services/authService'
+import React, { createContext, useState, useEffect, useCallback } from 'react';
+import PropTypes from 'prop-types';
+import authService from '../services/authService';
 
-export const AuthContext = createContext()
+export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [currentUser, setCurrentUser] = useState(null)
-  const [token, setToken] = useState(localStorage.getItem('token') || null)
-  const [refreshToken, setRefreshToken] = useState(localStorage.getItem('refreshToken') || null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
+  const [currentUser, setCurrentUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  useEffect(() => {
-    const initAuth = async () => {
-      if (token) {
-        try {
-          const userInfo = await authService.getCurrentUser()
-          setCurrentUser(userInfo)
-        } catch (err) {
-          setError(err.response?.data?.message || 'Error al obtener usuario actual')
-
-          if (refreshToken) {
-            try {
-              const response = await authService.refreshToken(refreshToken)
-              setToken(response.accessToken)
-              setRefreshToken(response.refreshToken)
-              localStorage.setItem('token', response.accessToken)
-              localStorage.setItem('refreshToken', response.refreshToken)
-
-              const userInfo = await authService.getCurrentUser()
-              setCurrentUser(userInfo)
-            } catch (refreshErr) {
-              setError(refreshErr.response?.data?.message || 'Error al refrescar el token')
-              logout()
-            }
-          } else {
-            logout()
-          }
-        } finally {
-          setLoading(false)
-        }
-      } else {
-        setLoading(false)
-      }
-    }
-
-    initAuth()
-  }, [token, refreshToken])
-
-  const login = async (credentials) => {
+  // ✅ FUNCIÓN PARA INICIALIZAR AUTENTICACIÓN
+  const initAuth = useCallback(async () => {
     try {
-      setError(null)
-      setLoading(true)
-      const response = await authService.login(credentials)
-      setToken(response.accessToken)
-      setRefreshToken(response.refreshToken)
-      localStorage.setItem('token', response.accessToken)
-      localStorage.setItem('refreshToken', response.refreshToken)
+      const token = localStorage.getItem('token');
+      
+      if (!token) {
+        console.log('🔍 No hay token, usuario no autenticado');
+        setLoading(false);
+        return;
+      }
 
-      const userInfo = await authService.getCurrentUser()
-      setCurrentUser(userInfo)
-      return userInfo
-    } catch (err) {
-      setError(err.response?.data?.message || 'Error al iniciar sesión')
-      throw err
+      console.log('🔍 Token encontrado, verificando usuario...');
+      
+      // ✅ INTENTAR OBTENER USUARIO ACTUAL
+      const userData = await authService.getCurrentUser();
+      setCurrentUser(userData);
+      setIsAuthenticated(true);
+      console.log('✅ Usuario autenticado:', userData.username);
+      
+    } catch (error) {
+      console.error('❌ Error al verificar autenticación:', error);
+      
+      // ✅ SI HAY ERROR, LIMPIAR ESTADO
+      setCurrentUser(null);
+      setIsAuthenticated(false);
+      localStorage.removeItem('token');
+      localStorage.removeItem('refreshToken');
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  }, []);
 
+  // ✅ FUNCIÓN DE REGISTRO
   const register = async (userData) => {
     try {
-      setError(null)
-      setLoading(true)
-      const response = await authService.register(userData)
-      return response
-    } catch (err) {
-      setError(err.response?.data?.message || 'Error al registrar')
-      throw err
-    } finally {
-      setLoading(false)
+      console.log('📝 Registrando usuario...');
+      const response = await authService.register(userData);
+      console.log('✅ Registro exitoso');
+      return response;
+    } catch (error) {
+      console.error('❌ Error en registro:', error);
+      throw error;
     }
-  }
+  };
 
-  const logout = async () => {
-    setLoading(true)
+  // ✅ FUNCIÓN DE LOGIN
+  const login = async (credentials) => {
     try {
-      if (token) {
-        await authService.logout()
-      }
-    } catch (err) {
-      console.error('Error durante el cierre de sesión:', err)
-      setError(err.response?.data?.message || 'No se pudo cerrar la sesión correctamente')
-    } finally {
-      setToken(null)
-      setRefreshToken(null)
-      setCurrentUser(null)
-      localStorage.removeItem('token')
-      localStorage.removeItem('refreshToken')
-      setLoading(false)
+      console.log('🔑 Iniciando sesión...');
+      const response = await authService.login(credentials);
+      
+      // ✅ ACTUALIZAR ESTADO DESPUÉS DEL LOGIN
+      setCurrentUser({
+        username: response.username,
+        email: response.email,
+        fullName: response.fullName
+      });
+      setIsAuthenticated(true);
+      
+      console.log('✅ Login exitoso para:', response.username);
+      return response;
+    } catch (error) {
+      console.error('❌ Error en login:', error);
+      throw error;
     }
-  }
+  };
 
-  const value = useMemo(() => ({
+  // ✅ FUNCIÓN DE LOGOUT
+  const logout = async () => {
+    try {
+      console.log('🚪 Cerrando sesión...');
+      await authService.logout();
+    } catch (error) {
+      console.error('❌ Error durante el cierre de sesión:', error);
+    } finally {
+      // ✅ LIMPIAR ESTADO SIEMPRE
+      setCurrentUser(null);
+      setIsAuthenticated(false);
+      localStorage.removeItem('token');
+      localStorage.removeItem('refreshToken');
+      console.log('✅ Sesión cerrada');
+    }
+  };
+
+  // ✅ INICIALIZAR AL MONTAR EL COMPONENTE
+  useEffect(() => {
+    initAuth();
+  }, [initAuth]);
+
+  const value = React.useMemo(() => ({
     currentUser,
-    token,
     loading,
-    error,
-    login,
+    isAuthenticated,
     register,
-    logout,
-    isAuthenticated: !!currentUser,
-    hasRole: (role) => currentUser?.roles?.includes(role) || false,
-  }), [currentUser, token, loading, error])
-
+    login,
+    logout
+  }), [currentUser, loading, isAuthenticated, register, login, logout]);
   return (
     <AuthContext.Provider value={value}>
       {children}
     </AuthContext.Provider>
-  )
-}
+  );
+};
 
 AuthProvider.propTypes = {
   children: PropTypes.node.isRequired,
-}
+};

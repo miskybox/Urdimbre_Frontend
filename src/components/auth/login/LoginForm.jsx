@@ -22,15 +22,14 @@ const LoginForm = () => {
 
   const validateForm = () => {
     const newErrors = {};
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s]).{8,}$/;
 
+    // ✅ VALIDACIÓN SIMPLE - Solo verificar que no estén vacíos
     if (!formData.username.trim()) {
-      newErrors.username = 'El email es obligatorio';
+      newErrors.username = 'El nombre de usuarie es obligatorio';
     }
 
-    if (!formData.password || !passwordRegex.test(formData.password)) {
-      newErrors.password =
-        'La contraseña debe tener al menos 8 caracteres, con mayúsculas, minúsculas, números y un símbolo.';
+    if (!formData.password.trim()) {
+      newErrors.password = 'La contraseña es obligatoria';
     }
 
     setErrors(newErrors);
@@ -40,15 +39,19 @@ const LoginForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) return;
+    
     setIsSubmitting(true);
+    
     try {
+      console.log('🔑 Intentando login con:', { username: formData.username });
       await login(formData);
       toast.success('¡Has iniciado sesión con éxito!');
       navigate('/');
     } catch (error) {
+      console.error('❌ Error en login:', error);
       const status = error.response?.status;
-      if (status === 401) {
-        setErrors({ auth: 'Email o contraseña incorrectos' });
+      if (status === 401 || status === 400) {
+        setErrors({ auth: 'Nombre de usuarie o contraseña incorrectos' });
       } else {
         toast.error(error.response?.data?.message || 'Error al iniciar sesión');
       }
@@ -60,24 +63,24 @@ const LoginForm = () => {
   return (
     <div className={styles.formContainer}>
       <img src="/logo/urdimbreLogo.png" alt="Logo de Urdimbre" className={styles.logo} />
-     <h2 className={styles.welcome}>¡Bienvenide, estás en casa!</h2>
+      <h2 className={styles.welcome}>¡Bienvenide, estás en casa!</h2>
       <form onSubmit={handleSubmit} autoComplete="off">
         {errors.auth && <div className={styles.error}>{errors.auth}</div>}
 
-        <label className={styles.label} htmlFor="username">Email</label>
+        <label className={styles.label} htmlFor="username">Nombre de Usuarie</label>
         <input
           id="username"
           name="username"
-          type="email"
-          placeholder="Introduce tu email"
+          type="text"
+          placeholder="Introduce tu nombre de usuarie"
           className={styles.input}
           value={formData.username}
           onChange={handleChange}
-          autoComplete="email"
+          autoComplete="username"
           required
           disabled={isSubmitting}
         />
-        <p className={styles.hint}>Tu email está seguro con nosotres.</p>
+        <p className={styles.hint}>Usa el mismo nombre de usuarie con el que te registraste.</p>
         {errors.username && <p className={styles.error}>{errors.username}</p>}
 
         <label className={styles.label} htmlFor="password">Contraseña</label>
@@ -91,7 +94,6 @@ const LoginForm = () => {
             value={formData.password}
             onChange={handleChange}
             autoComplete="current-password"
-            minLength={8}
             required
             disabled={isSubmitting}
           />
@@ -107,7 +109,7 @@ const LoginForm = () => {
         </div>
 
         <p className={styles.hint}>
-          Usa al menos 8 caracteres, con mayúsculas, minúsculas, números y al menos un símbolo.
+          Introduce la contraseña que usaste al registrarte.
         </p>
         {errors.password && <p className={styles.error}>{errors.password}</p>}
 
