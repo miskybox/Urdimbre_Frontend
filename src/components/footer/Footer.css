@@ -1,0 +1,28 @@
+.footer {
+  padding: 30px 20px;
+  background-color: #fff;
+  text-align: center;
+  font-size: 14px;
+  color: #333;
+}
+
+.footer-icons {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin-bottom: 16px;
+}
+
+.icon {
+  font-size: 24px;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.icon:hover {
+  color: #6b46c1;
+}
+
+.footer-text {
+  margin: 4px 0;
+}

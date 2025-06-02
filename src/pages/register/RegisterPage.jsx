@@ -16,18 +16,11 @@ const RegisterPage = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.header}>
-        <Link to="/">
-          <img src="/src/assets/animacion-imago-creatura.gif" alt="Urdimbre-creatura" className={styles.logo} />
-        </Link>
-        <h1 className={styles.title}>Únete a Urdimbre</h1>
-        <p className={styles.subtitle}>
-          Crea tu cuenta para acceder a todas las funciones de Urdimbre.
-        </p>
-      </div>
-      <RegisterForm />
-      <div className={styles.footer}>
-        <Link to="/">← Volver a la página principal</Link>
+      <div className={styles.content}>
+        <RegisterForm />
+        <div className={styles.footer}>
+          <Link to="/">← Volver a la página principal</Link>
+        </div>
       </div>
     </div>
   );
