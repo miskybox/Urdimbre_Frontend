@@ -8,7 +8,7 @@ const pronouns = ['Elle', 'Ella', 'El'];
 
 const RegisterForm = () => {
   const [formData, setFormData] = useState({
-    pronoun: '',
+    pronouns: '',      // ✅ CAMBIADO A PLURAL
     username: '',
     email: '',
     password: '',
@@ -33,15 +33,15 @@ const RegisterForm = () => {
   };
 
   const handlePronounSelect = (selected) => {
-    setFormData({ ...formData, pronoun: selected });
-    if (errors.pronoun) setErrors({ ...errors, pronoun: '' });
+    setFormData({ ...formData, pronouns: selected }); // ✅ CAMBIADO A PLURAL
+    if (errors.pronouns) setErrors({ ...errors, pronouns: '' }); // ✅ CAMBIADO A PLURAL
   };
 
   const validateForm = () => {
     const newErrors = {};
     const validCode = 'URDIMBRE2025';
 
-    if (!formData.pronoun) newErrors.pronoun = 'Selecciona un pronombre';
+    if (!formData.pronouns) newErrors.pronouns = 'Selecciona un pronombre'; // ✅ CAMBIADO A PLURAL
     if (!formData.username.trim()) newErrors.username = 'El nombre de usuarie es obligatorio';
     if (!formData.firstName.trim()) newErrors.firstName = 'El nombre es obligatorio';
     if (!formData.lastName.trim()) newErrors.lastName = 'El apellido es obligatorio';
@@ -60,8 +60,19 @@ const RegisterForm = () => {
     if (!validateForm()) return;
 
     setIsSubmitting(true);
-    const userData = { ...formData };
-    delete userData.confirmPassword;
+    
+    // ✅ PREPARAR DATOS PARA EL BACKEND CON NOMBRES CORRECTOS
+    const userData = {
+      username: formData.username,
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      pronouns: formData.pronouns,  // ✅ PLURAL
+      password: formData.password,
+      email: formData.email,
+      inviteCode: formData.inviteCode
+    };
+
+    console.log('Datos a enviar al backend:', userData); // ✅ DEBUG
 
     try {
       await register(userData);
@@ -69,6 +80,7 @@ const RegisterForm = () => {
       toast.success(`¡Registro exitoso! Bienvenide ${formData.username}`);
       navigate('/');
     } catch (error) {
+      console.error('Error completo:', error); // ✅ MÁS DEBUG
       const backendErrors = error.response?.data?.errors || {};
       setErrors({ ...errors, ...backendErrors });
       toast.error(error.response?.data?.message || 'Error al registrar');
@@ -87,14 +99,14 @@ const RegisterForm = () => {
             <button
               key={p}
               type="button"
-              className={`${styles.pronounButton} ${formData.pronoun === p ? styles.selected : ''}`}
+              className={`${styles.pronounButton} ${formData.pronouns === p ? styles.selected : ''}`} // ✅ CAMBIADO A PLURAL
               onClick={() => handlePronounSelect(p)}
             >
               {p}
             </button>
           ))}
         </div>
-        {errors.pronoun && <p className={styles.error}>{errors.pronoun}</p>}
+        {errors.pronouns && <p className={styles.error}>{errors.pronouns}</p>} {/* ✅ CAMBIADO A PLURAL */}
 
         <label htmlFor="username" className={styles.label}>Nombre de Usuarie</label>
         <input id="username" name="username" value={formData.username} onChange={handleChange} className={styles.input} placeholder="Ingrese su nombre de usuarie" />
