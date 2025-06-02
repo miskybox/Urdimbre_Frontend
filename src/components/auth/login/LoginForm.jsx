@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import useAuth from '../../../hooks/useAuth.js';
 import { toast } from 'react-hot-toast';
 import styles from './LoginForm.module.css';
@@ -12,6 +12,19 @@ const LoginForm = () => {
 
   const { login } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // ✅ MOSTRAR MENSAJE DE REGISTRO EXITOSO SI VIENE DEL REGISTER
+  useEffect(() => {
+    if (location.state?.message) {
+      toast.success(location.state.message, { duration: 4000 });
+      
+      // ✅ PRE-LLENAR USERNAME SI VIENE DEL REGISTRO
+      if (location.state?.username) {
+        setFormData(prev => ({ ...prev, username: location.state.username }));
+      }
+    }
+  }, [location.state]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -44,14 +57,28 @@ const LoginForm = () => {
     
     try {
       console.log('🔑 Intentando login con:', { username: formData.username });
-      await login(formData);
-      toast.success('¡Has iniciado sesión con éxito!');
-      navigate('/');
+      const response = await login(formData);
+      
+  // ✅ LOGIN EXITOSO - REDIRIGIR A HOME
+    toast.success(`¡Bienvenide de vuelta, ${response.username || formData.username}! 🎉`);
+    navigate('/'); 
+      
     } catch (error) {
       console.error('❌ Error en login:', error);
       const status = error.response?.status;
-      if (status === 401 || status === 400) {
+      
+      // ✅ MENSAJES DE ERROR ESPECÍFICOS
+      if (status === 401) {
         setErrors({ auth: 'Nombre de usuarie o contraseña incorrectos' });
+        toast.error('Credenciales incorrectas. Verifica tu usuario y contraseña.');
+      } else if (status === 400) {
+        setErrors({ auth: 'Datos de login inválidos' });
+        toast.error('Por favor, completa todos los campos correctamente.');
+      } else if (status === 403) {
+        setErrors({ auth: 'Acceso denegado' });
+        toast.error('Tu cuenta podría estar desactivada. Contacta al soporte.');
+      } else if (status >= 500) {
+        toast.error('Error del servidor. Intenta nuevamente en unos minutos.');
       } else {
         toast.error(error.response?.data?.message || 'Error al iniciar sesión');
       }

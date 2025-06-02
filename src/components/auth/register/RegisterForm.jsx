@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import useAuth from '../../../hooks/useAuth.js';
 import { toast } from 'react-hot-toast';
 import styles from './RegisterForm.module.css';
@@ -8,7 +8,7 @@ const pronouns = ['Elle', 'Ella', 'El'];
 
 const RegisterForm = () => {
   const [formData, setFormData] = useState({
-    pronouns: '',      // ✅ CAMBIADO A PLURAL
+    pronouns: '',
     username: '',
     email: '',
     password: '',
@@ -22,8 +22,9 @@ const RegisterForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [registrationSuccess, setRegistrationSuccess] = useState(false);
 
-  const { register, login } = useAuth();
+  const { register } = useAuth();
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -33,15 +34,15 @@ const RegisterForm = () => {
   };
 
   const handlePronounSelect = (selected) => {
-    setFormData({ ...formData, pronouns: selected }); // ✅ CAMBIADO A PLURAL
-    if (errors.pronouns) setErrors({ ...errors, pronouns: '' }); // ✅ CAMBIADO A PLURAL
+    setFormData({ ...formData, pronouns: selected });
+    if (errors.pronouns) setErrors({ ...errors, pronouns: '' });
   };
 
   const validateForm = () => {
     const newErrors = {};
     const validCode = 'URDIMBRE2025';
 
-    if (!formData.pronouns) newErrors.pronouns = 'Selecciona un pronombre'; // ✅ CAMBIADO A PLURAL
+    if (!formData.pronouns) newErrors.pronouns = 'Selecciona un pronombre';
     if (!formData.username.trim()) newErrors.username = 'El nombre de usuarie es obligatorio';
     if (!formData.firstName.trim()) newErrors.firstName = 'El nombre es obligatorio';
     if (!formData.lastName.trim()) newErrors.lastName = 'El apellido es obligatorio';
@@ -61,52 +62,103 @@ const RegisterForm = () => {
 
     setIsSubmitting(true);
     
-    // ✅ PREPARAR DATOS PARA EL BACKEND CON NOMBRES CORRECTOS
     const userData = {
       username: formData.username,
       firstName: formData.firstName,
       lastName: formData.lastName,
-      pronouns: formData.pronouns,  // ✅ PLURAL
+      pronouns: formData.pronouns,
       password: formData.password,
       email: formData.email,
       inviteCode: formData.inviteCode
     };
 
-    console.log('Datos a enviar al backend:', userData); // ✅ DEBUG
+    console.log('📝 Datos a enviar al backend:', userData);
 
     try {
       await register(userData);
-      await login({ username: formData.username, password: formData.password });
-      toast.success(`¡Registro exitoso! Bienvenide ${formData.username}`);
-      navigate('/');
+      
+      // ✅ REGISTRO EXITOSO
+      setRegistrationSuccess(true);
+      toast.success(`¡Registro exitoso! Bienvenide ${formData.username} 🎉`);
+      
+      // ✅ REDIRIGIR AL LOGIN DESPUÉS DE 3 SEGUNDOS
+      setTimeout(() => {
+        navigate('/login', { 
+          state: { 
+            message: `¡Hola ${formData.username}! Tu cuenta ha sido creada exitosamente. Ahora puedes iniciar sesión.`,
+            username: formData.username 
+          }
+        });
+      }, 6000);
+      
     } catch (error) {
-      console.error('Error completo:', error); // ✅ MÁS DEBUG
+      console.error('❌ Error completo:', error);
       const backendErrors = error.response?.data?.errors || {};
       setErrors({ ...errors, ...backendErrors });
-      toast.error(error.response?.data?.message || 'Error al registrar');
+      
+      // ✅ MENSAJES DE ERROR ESPECÍFICOS
+      const errorMessage = error.response?.data?.message || 'Error al registrar';
+      if (error.response?.status === 400) {
+        toast.error('Datos inválidos. Revisa los campos marcados.');
+      } else if (error.response?.status === 409) {
+        toast.error('El usuario o email ya existe. Prueba con otros datos.');
+      } else {
+        toast.error(errorMessage);
+      }
     } finally {
       setIsSubmitting(false);
     }
   };
 
+  // ✅ PANTALLA DE ÉXITO
+  if (registrationSuccess) {
+    return (
+      <div className={styles.formContainer}>
+        <div className={styles.successContainer}>
+          <div className={styles.successIcon}>🎉</div>
+          <h2 className={styles.successTitle}>¡Registro Exitoso!</h2>
+          <p className={styles.successMessage}>
+            ¡Hola <strong>{formData.username}</strong>! 
+            Tu cuenta ha sido creada exitosamente.
+          </p>
+          <p className={styles.successSubtext}>
+            Redirigiendo al inicio de sesión...
+          </p>
+          <div className={styles.successActions}>
+            <Link 
+              to="/login" 
+              className={`${styles.button} ${styles.loginButton}`}
+              state={{ 
+                message: `¡Hola ${formData.username}! Tu cuenta ha sido creada exitosamente.`,
+                username: formData.username 
+              }}
+            >
+              Ir al Login
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className={styles.formContainer}>
       <h2 className={styles.title}>Únete a Urdimbre</h2>
       <form onSubmit={handleSubmit}>
-        <label className={styles.label}>Pronombre</label>
-        <div className={styles.pronounGroup}>
+        <fieldset className={styles.pronounGroup}>
+          <legend className={styles.label}>Pronombre</legend>
           {pronouns.map((p) => (
             <button
               key={p}
               type="button"
-              className={`${styles.pronounButton} ${formData.pronouns === p ? styles.selected : ''}`} // ✅ CAMBIADO A PLURAL
+              className={`${styles.pronounButton} ${formData.pronouns === p ? styles.selected : ''}`}
               onClick={() => handlePronounSelect(p)}
             >
               {p}
             </button>
           ))}
-        </div>
-        {errors.pronouns && <p className={styles.error}>{errors.pronouns}</p>} {/* ✅ CAMBIADO A PLURAL */}
+        </fieldset>
+        {errors.pronouns && <p className={styles.error}>{errors.pronouns}</p>}
 
         <label htmlFor="username" className={styles.label}>Nombre de Usuarie</label>
         <input id="username" name="username" value={formData.username} onChange={handleChange} className={styles.input} placeholder="Ingrese su nombre de usuarie" />
