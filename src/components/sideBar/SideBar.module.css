@@ -1,0 +1,61 @@
+.sidebar {
+    position: fixed;
+    top: 90px; 
+    left: 20px;
+    width: 240px;
+    max-height: 400px; /* altura limitada */
+    background-color: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(30px);
+    box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 30px 20px;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    transform: translateX(-300px);
+    transition: transform 0.3s ease-in-out;
+    z-index: 100;
+  }
+  
+  .sidebarOpen {
+    transform: translateX(0);
+  }
+  
+  .closeButton {
+    position: fixed;
+    top: 60px;
+    left: 270px;
+    z-index: 110;
+    background: none;
+    border: none;
+    font-size: 28px;
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+  }
+  
+  .closeButton:hover {
+    transform: scale(1.1);
+  }
+  
+  .nav {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .nav a,
+  .nav span {
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: #222;
+    text-decoration: none;
+    transition: color 0.2s;
+    font-family: var(--font-family-base);
+  }
+  
+  .nav a:hover,
+  .nav span:hover {
+    color: #7c1d8d;
+  }
+  

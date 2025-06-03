@@ -1,24 +1,36 @@
 import React, { useState } from "react";
-import "./Header.css";
+import styles from "./Header.module.css";
+import { FaBars } from "react-icons/fa";
+import Sidebar from "../sideBar/SideBar";
+
 
 const Header = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleSidebar = () => {
+    setIsOpen((prev) => !prev);
+  };
+
   return (
-    <header className="header">
-      <div className="menu-links">
-        <span>Eventos</span>
-        <span>Colectivos</span>
-        <span>Foro</span>
-        <span>Profesionales</span>
-        <span>Sitios SEGUROS</span>
-      </div>
-      <div className="logo-container">
-        <img
-          src="./assets/logo-urdimbre-final.png"
-          alt="Logo Urdimbre"
-          className="Logo"
-        />
-      </div>
-    </header>
+    <>
+      <header className={styles.header}>
+        <button className={styles.menuButton} onClick={toggleSidebar}>
+          <FaBars />
+        </button>
+
+        <div className={styles.logoContainer}>
+          <img
+            src="/logo/urdimbreLogo.png"
+            alt="Logo Urdimbre"
+            className={styles.logo}
+            onClick={() => window.location.reload()}
+            style={{ cursor: "pointer" }}
+          />
+        </div>
+      </header>
+
+      <Sidebar isOpen={isOpen} toggleSidebar={toggleSidebar} />
+    </>
   );
 };
 

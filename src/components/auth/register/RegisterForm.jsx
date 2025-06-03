@@ -15,7 +15,9 @@ const RegisterForm = () => {
     confirmPassword: '',
     firstName: '',
     lastName: '',
-    inviteCode: ''
+    inviteCode: '',
+    acceptPrivacy: false,
+    acceptTerms: false
   });
 
   const [errors, setErrors] = useState({});
@@ -28,8 +30,9 @@ const RegisterForm = () => {
   const navigate = useNavigate();
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    const { name, value, type, checked } = e.target;
+    const fieldValue = type === 'checkbox' ? checked : value;
+    setFormData({ ...formData, [name]: fieldValue });
     if (errors[name]) setErrors({ ...errors, [name]: '' });
   };
 
@@ -51,6 +54,8 @@ const RegisterForm = () => {
     if (formData.password !== formData.confirmPassword) newErrors.confirmPassword = 'Las contraseñas no coinciden';
     if (!formData.inviteCode || formData.inviteCode !== validCode)
       newErrors.inviteCode = 'Código de validación inválido o ausente';
+    if (!formData.acceptPrivacy) newErrors.acceptPrivacy = 'Debes aceptar la política de privacidad';
+    if (!formData.acceptTerms) newErrors.acceptTerms = 'Debes aceptar los términos y condiciones';
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -61,7 +66,7 @@ const RegisterForm = () => {
     if (!validateForm()) return;
 
     setIsSubmitting(true);
-    
+
     const userData = {
       username: formData.username,
       firstName: formData.firstName,
@@ -72,31 +77,24 @@ const RegisterForm = () => {
       inviteCode: formData.inviteCode
     };
 
-    console.log('📝 Datos a enviar al backend:', userData);
-
     try {
       await register(userData);
-      
-      // ✅ REGISTRO EXITOSO
+
       setRegistrationSuccess(true);
       toast.success(`¡Registro exitoso! Bienvenide ${formData.username} 🎉`);
-      
-      // ✅ REDIRIGIR AL LOGIN DESPUÉS DE 3 SEGUNDOS
+
       setTimeout(() => {
-        navigate('/login', { 
-          state: { 
-            message: `¡Hola ${formData.username}! Tu cuenta ha sido creada exitosamente. Ahora puedes iniciar sesión.`,
-            username: formData.username 
+        navigate('/login', {
+          state: {
+            message: `¡Hola ${formData.username}! Tu cuenta ha sido creada exitosamente.`,
+            username: formData.username
           }
         });
       }, 6000);
-      
     } catch (error) {
-      console.error('❌ Error completo:', error);
       const backendErrors = error.response?.data?.errors || {};
       setErrors({ ...errors, ...backendErrors });
-      
-      // ✅ MENSAJES DE ERROR ESPECÍFICOS
+
       const errorMessage = error.response?.data?.message || 'Error al registrar';
       if (error.response?.status === 400) {
         toast.error('Datos inválidos. Revisa los campos marcados.');
@@ -110,7 +108,6 @@ const RegisterForm = () => {
     }
   };
 
-  // ✅ PANTALLA DE ÉXITO
   if (registrationSuccess) {
     return (
       <div className={styles.formContainer}>
@@ -118,19 +115,16 @@ const RegisterForm = () => {
           <div className={styles.successIcon}>🎉</div>
           <h2 className={styles.successTitle}>¡Registro Exitoso!</h2>
           <p className={styles.successMessage}>
-            ¡Hola <strong>{formData.username}</strong>! 
-            Tu cuenta ha sido creada exitosamente.
+            ¡Hola <strong>{formData.username}</strong>! Tu cuenta ha sido creada exitosamente.
           </p>
-          <p className={styles.successSubtext}>
-            Redirigiendo al inicio de sesión...
-          </p>
+          <p className={styles.successSubtext}>Redirigiendo al inicio de sesión...</p>
           <div className={styles.successActions}>
-            <Link 
-              to="/login" 
+            <Link
+              to="/login"
               className={`${styles.button} ${styles.loginButton}`}
-              state={{ 
+              state={{
                 message: `¡Hola ${formData.username}! Tu cuenta ha sido creada exitosamente.`,
-                username: formData.username 
+                username: formData.username
               }}
             >
               Ir al Login
@@ -224,6 +218,33 @@ const RegisterForm = () => {
         <label htmlFor="inviteCode" className={styles.label}>Código de Validación</label>
         <input id="inviteCode" name="inviteCode" value={formData.inviteCode} onChange={handleChange} className={styles.input} placeholder="Ingrese el código que recibió" />
         {errors.inviteCode && <p className={styles.error}>{errors.inviteCode}</p>}
+
+        {/* ✅ Casillas de verificación */}
+        <div className={styles.checkboxGroup}>
+          <label className={styles.checkboxLabel}>
+            <input
+              type="checkbox"
+              name="acceptPrivacy"
+              checked={formData.acceptPrivacy}
+              onChange={handleChange}
+            />
+            He leído y acepto la{' '}
+            <Link to="/privacy" target="_blank" rel="noopener noreferrer">política de privacidad</Link>.
+          </label>
+          {errors.acceptPrivacy && <p className={styles.error}>{errors.acceptPrivacy}</p>}
+
+          <label className={styles.checkboxLabel}>
+            <input
+              type="checkbox"
+              name="acceptTerms"
+              checked={formData.acceptTerms}
+              onChange={handleChange}
+            />
+            Acepto los{' '}
+            <Link to="/terms" target="_blank" rel="noopener noreferrer">términos y condiciones</Link>.
+          </label>
+          {errors.acceptTerms && <p className={styles.error}>{errors.acceptTerms}</p>}
+        </div>
 
         <div className={styles.buttonContainer}>
           <button type="button" className={`${styles.button} ${styles.cancelButton}`} onClick={() => navigate('/')}>

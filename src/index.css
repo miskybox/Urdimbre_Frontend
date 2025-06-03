@@ -6,6 +6,7 @@
   --text-color: #000000;
   --input-border: #6A1B9A;
   --error-color: #D32F2F;
+  
 
   --primary-color: #CBAACB; /* Botón izquierdo */
   --secondary-color: #94D0F5; /* Botón derecho */
@@ -14,6 +15,8 @@
   --font-size-sm: 0.875rem;
 
   --focus-outline: 2px solid #6A1B9A;
+
+  --hover-soft: #b287d2;
 
   --font-family-base: 'Atkinson Hyperlegible', Arial, sans-serif;
 }
