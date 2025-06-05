@@ -219,7 +219,7 @@ const RegisterForm = () => {
         <input id="inviteCode" name="inviteCode" value={formData.inviteCode} onChange={handleChange} className={styles.input} placeholder="Ingrese el código que recibió" />
         {errors.inviteCode && <p className={styles.error}>{errors.inviteCode}</p>}
 
-        {/* ✅ Casillas de verificación */}
+       
         <div className={styles.checkboxGroup}>
           <label className={styles.checkboxLabel}>
             <input
