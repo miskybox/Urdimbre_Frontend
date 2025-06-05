@@ -9,22 +9,33 @@ const LoginForm = () => {
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [loginAttempts, setLoginAttempts] = useState(0);
+  const [cooldown, setCooldown] = useState(false);
 
   const { login } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
-  // ✅ MOSTRAR MENSAJE DE REGISTRO EXITOSO SI VIENE DEL REGISTER
   useEffect(() => {
     if (location.state?.message) {
       toast.success(location.state.message, { duration: 4000 });
-      
-      // ✅ PRE-LLENAR USERNAME SI VIENE DEL REGISTRO
       if (location.state?.username) {
         setFormData(prev => ({ ...prev, username: location.state.username }));
       }
     }
   }, [location.state]);
+
+  useEffect(() => {
+    if (loginAttempts >= 5) {
+      setCooldown(true);
+      toast.error('Demasiados intentos. Espera 30 segundos.');
+      const timer = setTimeout(() => {
+        setLoginAttempts(0);
+        setCooldown(false);
+      }, 30000);
+      return () => clearTimeout(timer);
+    }
+  }, [loginAttempts]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -36,13 +47,16 @@ const LoginForm = () => {
   const validateForm = () => {
     const newErrors = {};
 
-    // ✅ VALIDACIÓN SIMPLE - Solo verificar que no estén vacíos
     if (!formData.username.trim()) {
       newErrors.username = 'El nombre de usuarie es obligatorio';
     }
 
+    const passwordRegex = /^.*(?=.{8,})(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).*$/;
+
     if (!formData.password.trim()) {
       newErrors.password = 'La contraseña es obligatoria';
+    } else if (!passwordRegex.test(formData.password)) {
+      newErrors.password = 'Debe tener al menos 8 caracteres, mayúscula, minúscula, número y símbolo';
     }
 
     setErrors(newErrors);
@@ -51,36 +65,31 @@ const LoginForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!validateForm()) return;
-    
+    if (!validateForm() || cooldown) return;
+
     setIsSubmitting(true);
-    
+
     try {
-      console.log('🔑 Intentando login con:', { username: formData.username });
       const response = await login(formData);
-      
-  // ✅ LOGIN EXITOSO - REDIRIGIR A HOME
-    toast.success(`¡Bienvenide de vuelta, ${response.username || formData.username}! 🎉`);
-    navigate('/'); 
-      
+      toast.success(`¡Bienvenide de vuelta, ${response.username || formData.username}! 🎉`);
+      navigate('/home');
     } catch (error) {
-      console.error('❌ Error en login:', error);
+      setLoginAttempts(prev => prev + 1);
       const status = error.response?.status;
-      
-      // ✅ MENSAJES DE ERROR ESPECÍFICOS
+
       if (status === 401) {
         setErrors({ auth: 'Nombre de usuarie o contraseña incorrectos' });
-        toast.error('Credenciales incorrectas. Verifica tu usuario y contraseña.');
+        toast.error('Credenciales incorrectas.');
       } else if (status === 400) {
         setErrors({ auth: 'Datos de login inválidos' });
-        toast.error('Por favor, completa todos los campos correctamente.');
+        toast.error('Completa todos los campos correctamente.');
       } else if (status === 403) {
         setErrors({ auth: 'Acceso denegado' });
-        toast.error('Tu cuenta podría estar desactivada. Contacta al soporte.');
+        toast.error('Tu cuenta podría estar inactiva.');
       } else if (status >= 500) {
-        toast.error('Error del servidor. Intenta nuevamente en unos minutos.');
+        toast.error('Servidor inestable. Intenta más tarde.');
       } else {
-        toast.error(error.response?.data?.message || 'Error al iniciar sesión');
+        toast.error('Error inesperado al iniciar sesión.');
       }
     } finally {
       setIsSubmitting(false);
@@ -135,9 +144,7 @@ const LoginForm = () => {
           </button>
         </div>
 
-        <p className={styles.hint}>
-          Introduce la contraseña que usaste al registrarte.
-        </p>
+        <p className={styles.hint}>Debe tener al menos 8 caracteres, mayúscula, minúscula, número y símbolo.</p>
         {errors.password && <p className={styles.error}>{errors.password}</p>}
 
         <div className={styles.buttonContainer}>
@@ -152,7 +159,7 @@ const LoginForm = () => {
           <button
             type="submit"
             className={`${styles.button} ${styles.loginButton}`}
-            disabled={isSubmitting}
+            disabled={isSubmitting || cooldown}
           >
             {isSubmitting ? 'Iniciando...' : 'Iniciar Sesión'}
           </button>
