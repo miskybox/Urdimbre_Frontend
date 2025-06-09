@@ -1,5 +1,5 @@
-import Rect from "react";
-import style from "./ProfessionalsCard.module.css";
+import React from "react";
+import styles from "./ProfessionalsCard.module.css";
 
 const ProfessionalsCard = ({
   image,
