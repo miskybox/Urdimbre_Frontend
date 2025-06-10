@@ -65,3 +65,9 @@
   color: #333;
   font-weight: 500;
 }
+.actividades {
+  display: inline-block;
+  margin-left: 0.5rem;
+  font-size: 0.9rem;
+  color: #444;
+}

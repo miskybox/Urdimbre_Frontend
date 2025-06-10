@@ -2,15 +2,18 @@ import React from "react";
 import styles from "./ProfessionalsCard.module.css";
 
 const ProfessionalsCard = ({
-  image,
   nProfesional,
   description,
   location,
+  actividades,
   price,
+  telefono,
+  email,
+  web,
+  redes,
 }) => {
   return (
     <div className={styles.card}>
-      <img src={image} alt={nProfesional} className={styles.image} />
       <div className={styles.content}>
         <div className={styles.header}>
           <h2 className={styles.name}>{nProfesional}</h2>
@@ -21,8 +24,34 @@ const ProfessionalsCard = ({
         </div>
 
         <div className={styles.subinfo}>
-          <span className={styles.location}>📍 {location}</span>
+          {location && <span className={styles.location}>📍{location}</span>}
+          {actividades && (
+            <span className={styles.actividades}>🛠{actividades}</span>
+          )}
+          {telefono && <span className={styles.telefono}>📞 {telefono}</span>}
+          {email && (
+            <span className={styles.email}>
+              📧 <a href={`mailto:${email}`}>{email}</a>
+            </span>
+          )}
+          {web && (
+            <span className={styles.web}>
+              🌐{" "}
+              <a href={web} target="_blank" rel="noreferrer">
+                {web}
+              </a>
+            </span>
+          )}
+          {redes && (
+            <span className={styles.redes}>
+              🔗{" "}
+              <a href={redes} target="_blank" rel="noreferrer">
+                {redes}
+              </a>
+            </span>
+          )}
         </div>
+
         <p className={styles.description}>{description}</p>
       </div>
     </div>
