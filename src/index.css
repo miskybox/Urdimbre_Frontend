@@ -1,16 +1,28 @@
+@import url('https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible&display=swap');
+
 :root {
-  --primary-color: #007bff;
-  --success-color: #28a745;
-  --error-color: #d93025;
   --bg-color: #ffffff;
-  --input-border: #ccc;
-  --text-color: #333;
   --shadow-color: rgba(0, 0, 0, 0.1);
+  --text-color: #000000;
+  --input-border: #6A1B9A;
+  --error-color: #D32F2F;
+  
+
+  --primary-color: #CBAACB; /* Botón izquierdo */
+  --secondary-color: #94D0F5; /* Botón derecho */
+
   --font-size-base: 1rem;
   --font-size-sm: 0.875rem;
+
+  --focus-outline: 2px solid #6A1B9A;
+
+  --hover-soft: #b287d2;
+
+  --font-family-base: 'Atkinson Hyperlegible', Arial, sans-serif;
 }
+
 body {
-  font-family: Arial, sans-serif;
+  font-family: var(--font-family-base);
   background-color: var(--bg-color);
   color: var(--text-color);
   margin: 0;

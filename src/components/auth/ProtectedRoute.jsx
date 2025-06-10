@@ -12,11 +12,9 @@ const ProtectedRoute = ({ children, requiredRoles = [] }) => {
     return <LoadingSpinner />
   }
 
-
   if (!isAuthenticated) {
     return <Navigate to="/login" state={{ from: location.pathname }} replace />
   }
-
 
   if (requiredRoles.length > 0) {
     const hasRequiredRole = requiredRoles.some(role => 
@@ -27,7 +25,6 @@ const ProtectedRoute = ({ children, requiredRoles = [] }) => {
       return <Navigate to="/" replace />
     }
   }
-
 
   return children
 }

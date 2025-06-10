@@ -1,0 +1,31 @@
+.termsContainer {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: var(--bg-color);
+    border-radius: 1rem;
+    box-shadow: 0 4px 20px var(--shadow-color);
+    color: var(--text-color);
+  }
+  
+  .termsContainer h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+  
+  .termsContainer h2 {
+    margin-top: 1.5rem;
+    font-size: 1.25rem;
+  }
+  
+  .termsContainer p,
+  .termsContainer ul {
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+  
+  .termsContainer a {
+    color: var(--link-color);
+    text-decoration: underline;
+  }
+  

@@ -1,42 +1,22 @@
-import React, { useState } from "react";
+import React from "react";
 import MainLayout from "../../components/mainLayout/MainLayout";
-import "./Home.css";
-import logo from "/assets/logo-urdimbre-final.png";
+import Carousel from "../../components/carousel/Carousel";
+import styles from "./Home.module.css";
 
 const images = [
-  "/assets/img1.png",
-  "/assets/img2.png",
-  "/assets/img3.png",
-  "/assets/logo-urdimbre-final.png",
-]; //yo no teng las imagenes
+  "/image/image1.png",
+  "/image/image2.png",
+  "/image/image3.png",
+];
 
 const Home = () => {
-  const [current, setCurrent] = useState(0);
-
-  const prevSlide = () => {
-    setCurrent((prev) => (prev === 0 ? images.length - 1 : prev - 1));
-  };
-
-  const nextSlide = () => {
-    setCurrent((prev) => (prev === images.length - 1 ? 0 : prev + 1));
-  };
   return (
     <MainLayout>
-      <section className="carousel">
-        <button className="nav left" onClick={prevSlide}>
-          ←
-        </button>
-        <img
-          src={images[current]}
-          alt="Carusel Urdimbre"
-          className="carousel-img"
-        />
-        <button className="nav rigth" onClick={nextSlide}>
-          →
-        </button>
+      <section className={styles.carouselContainer}>
+        <Carousel images={images} />
       </section>
 
-      <section className="about-us">
+      <section className={styles.aboutUs}>
         <h2>¿Qué es Urdimbre?</h2>
         <p>
           Urdimbre es una asociación creada por y para personas trans, no
@@ -45,19 +25,16 @@ const Home = () => {
           segura.
         </p>
         <p>
-          {" "}
           Nacida de iniciativas como <strong>Boxeo Trans</strong> y otros
-          proyectos impulsados por
-          <strong> Biceps & Drama</strong>, Urdimbre da continuidad a estas
-          propuestas y crea nuevas oportunidades para nuestras comunidades.
+          proyectos impulsados por <strong>Biceps & Drama</strong>, Urdimbre da
+          continuidad a estas propuestas y crea nuevas oportunidades para nuestras
+          comunidades.
         </p>
         <p>
-          {" "}
           Además de ofrecer espacios de encuentro, Urdimbre impulsa la creación
-          de empleo digno y accesible para personas trans, no binarias e
-          intersex.
+          de empleo digno y accesible para personas trans, no binarias e intersex.
         </p>
-        <div className="about-list">
+        <div className={styles.aboutList}>
           <strong>Nuestros ejes de acción:</strong>
           <ul>
             <li>Crear nuevos proyectos comunitarios</li>

@@ -1,0 +1,13 @@
+.pageContainer {
+  min-height: 100vh;
+  background-color: #f8f9fa;
+}
+
+@media (min-width: 768px) {
+  .pageContainer {
+    background-color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+  }
+}
