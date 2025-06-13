@@ -7,7 +7,7 @@ const Privacy = () => {
   const navigate = useNavigate();
 
   const handleClose = () => {
-    navigate("/home");
+    navigate("/register");
   };
 
   return (

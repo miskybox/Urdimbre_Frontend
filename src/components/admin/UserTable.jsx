@@ -1,17 +1,15 @@
 import { useEffect, useState } from 'react';
 import styles from './UserTable.module.css';
-// import { getAllUsers, updateUserRole } from '../../services/userService';
 import useAuth from '../../hooks/useAuth';
 
 const UserTable = () => {
-  // 🔧 Usuario simulado con rol admin
-  // const { user } = useAuth();
+
   const user = { role: 'admin' };
 
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    console.log("🟢 useEffect ejecutado (mock activado)");
+  
 
     const mockUsers = [
       { id: 1, firstName: "Alex", lastName: "Rivera", email: "alex@mail.com", role: "user" },
@@ -23,8 +21,7 @@ const UserTable = () => {
   }, []);
 
   const handleRoleChange = (userId, newRole) => {
-    console.log(`➡️ Cambiando rol de usuario ${userId} a ${newRole}`);
-    setUsers((prev) =>
+      setUsers((prev) =>
       prev.map((u) => (u.id === userId ? { ...u, role: newRole } : u))
     );
   };

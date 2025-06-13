@@ -9,7 +9,7 @@ const ClassDetail = () => {
   const [showReservationModal, setShowReservationModal] = useState(false);
   const [reservationStatus, setReservationStatus] = useState('available'); // available, reserved, confirmed
 
-  // Sample class data - in real app this would come from API
+ 
   const classData = {
     id: classId || '1',
     title: 'TONIFICACION',
@@ -38,7 +38,7 @@ const ClassDetail = () => {
   const handleReserveClass = () => {
     setShowReservationModal(true);
     
-    // Simulate API call
+
     setTimeout(() => {
       setReservationStatus('confirmed');
     }, 1500);

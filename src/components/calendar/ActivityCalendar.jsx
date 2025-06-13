@@ -12,7 +12,7 @@ const ActivityCalendar = () => {
   const [showActivityModal, setShowActivityModal] = useState(false);
   const [reservationStatus, setReservationStatus] = useState({}); // Track reservation status per activity
 
-  // Update time every minute
+  
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentTime(new Date());
@@ -21,9 +21,9 @@ const ActivityCalendar = () => {
     return () => clearInterval(timer);
   }, []);
 
-  // Sample activities data - in real app this would come from API
+  
   const activitiesData = {
-    // Activities by date key (YYYY-MM-DD format)
+   
     '2025-05-29': [
       {
         id: 'cycling-29-1530',
@@ -170,7 +170,6 @@ const ActivityCalendar = () => {
     });
   }, []);
 
-  // Generate calendar days for current month
   const generateCalendarDays = useCallback(() => {
     const year = currentMonth.getFullYear();
     const month = currentMonth.getMonth();
@@ -181,12 +180,12 @@ const ActivityCalendar = () => {
     
     const days = [];
     
-    // Add empty cells for days before the first day of the month
+   
     for (let i = 0; i < startingDayOfWeek; i++) {
       days.push(null);
     }
     
-    // Add all days of the month
+   
     for (let day = 1; day <= daysInMonth; day++) {
       const date = new Date(year, month, day);
       const hasActivities = getActivitiesForDate(date).length > 0;
@@ -202,7 +201,7 @@ const ActivityCalendar = () => {
     return days;
   }, [currentMonth, getActivitiesForDate, isSameDay, selectedDate]);
 
-  // Get week days for horizontal scroll
+ 
   const getWeekDays = useCallback(() => {
     const days = [];
     const startOfWeek = new Date(selectedDate);
@@ -254,14 +253,14 @@ const ActivityCalendar = () => {
       [activityId]: 'processing'
     }));
 
-    // Simulate API call
+   
     setTimeout(() => {
       setReservationStatus(prev => ({
         ...prev,
         [activityId]: 'confirmed'
       }));
       
-      // Update available spots
+   
       const dateKey = selectedDate.toISOString().split('T')[0];
       if (activitiesData[dateKey]) {
         const activityIndex = activitiesData[dateKey].findIndex(a => a.id === activityId);
@@ -270,7 +269,7 @@ const ActivityCalendar = () => {
         }
       }
       
-      // Close modal after showing confirmation
+      
       setTimeout(() => {
         setShowActivityModal(false);
         setSelectedActivity(null);
@@ -297,7 +296,6 @@ const ActivityCalendar = () => {
     return reservationStatus[activityId] === 'processing';
   }, [reservationStatus]);
 
-  // Helper function to get calendar day classes
   const getCalendarDayClasses = useCallback((dayData) => {
     if (!dayData) return styles.calendarDayEmpty;
     
@@ -309,7 +307,7 @@ const ActivityCalendar = () => {
     return classes;
   }, []);
 
-  // Helper function to render spots info
+  
   const renderSpotsInfo = useCallback((activity) => {
     if (isActivityReserved(activity.id)) {
       return <span className={styles.reservedBadge}>Reservado</span>;
@@ -325,7 +323,7 @@ const ActivityCalendar = () => {
     );
   }, [isActivityReserved, getSpotsColor]);
 
-  // Helper function to render reserve button
+
   const renderReserveButton = useCallback((activity) => {
     const isProcessing = isActivityProcessing(activity.id);
     const isDisabled = activity.availableSpots === 0 || isProcessing;

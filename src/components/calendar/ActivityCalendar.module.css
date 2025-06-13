@@ -1,4 +1,4 @@
-/* ActivityCalendar.module.css - Mobile First */
+
 
 .container {
   max-width: 100%;
@@ -7,7 +7,7 @@
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
 }
 
-/* Header */
+
 .header {
   display: flex;
   align-items: center;
@@ -57,7 +57,7 @@
   text-align: right;
 }
 
-/* Filters */
+
 .filtersContainer {
   padding: 16px;
   background-color: white;
@@ -115,7 +115,7 @@
   border-color: #212529 !important;
 }
 
-/* Weekly calendar */
+
 .weeklyCalendar {
   display: flex;
   justify-content: space-between;
@@ -214,7 +214,7 @@
   transform: rotate(180deg);
 }
 
-/* Full Calendar */
+
 .fullCalendar {
   background: white;
   border-bottom: 1px solid #e9ecef;
@@ -374,7 +374,6 @@
   white-space: nowrap;
 }
 
-/* Activities list */
 .activitiesList {
   padding: 16px;
   background-color: #f8f9fa;
@@ -483,7 +482,6 @@
   background-color: #fd7e14;
 }
 
-/* Reserved badge */
 .reservedBadge {
   background: #28a745;
   color: white;
@@ -496,7 +494,7 @@
   white-space: nowrap;
 }
 
-/* No activities state */
+
 .noActivities {
   display: flex;
   flex-direction: column;
@@ -526,7 +524,6 @@
   line-height: 1.4;
 }
 
-/* Activity Detail Modal - Mobile First */
 .modalOverlay {
   position: fixed;
   top: 0;
@@ -614,7 +611,7 @@
   background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent);
 }
 
-/* Modal Content */
+
 .modalContent {
   padding: 20px 16px 16px;
   flex: 1;
@@ -650,7 +647,7 @@
   margin: 0 0 24px 0;
 }
 
-/* Modal Sections */
+
 .modalSection {
   margin-bottom: 24px;
   padding-bottom: 20px;
@@ -669,7 +666,6 @@
   margin: 0 0 12px 0;
 }
 
-/* Schedule section */
 .modalScheduleInfo {
   display: flex;
   align-items: flex-start;
@@ -746,7 +742,7 @@
   background-color: #e9ecef;
 }
 
-/* Location section */
+
 .modalLocationInfo {
   display: flex;
   justify-content: space-between;
@@ -780,7 +776,7 @@
   background-color: #e9ecef;
 }
 
-/* Instructor section */
+
 .modalInstructorName {
   font-size: 16px;
   color: #212529;
@@ -788,7 +784,7 @@
   margin: 0;
 }
 
-/* Description section */
+
 .modalDescription {
   font-size: 14px;
   color: #495057;
@@ -796,7 +792,6 @@
   margin: 0;
 }
 
-/* Reserve section */
 .modalReserveSection {
   padding: 16px 0 0;
   margin-top: 16px;
@@ -848,7 +843,7 @@
   100% { transform: rotate(360deg); }
 }
 
-/* Confirmation content */
+
 .confirmationContent {
   display: flex;
   flex-direction: column;

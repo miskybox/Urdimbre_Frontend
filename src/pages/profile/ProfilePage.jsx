@@ -1,11 +1,15 @@
 import { useState } from 'react';
 import styles from './ProfilePage.module.css';
+import { FaTimes } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 
 const pronouns = ['Elle', 'Ella', 'El'];
 
 const ProfilePage = () => {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
-    pronouns: '',
+    pronouns: [],
     username: '',
     firstName: '',
     lastName: '',
@@ -29,13 +33,16 @@ const ProfilePage = () => {
     }
   };
 
-  const handlePronounSelect = (selected) => {
-    setFormData({ ...formData, pronouns: selected });
+  const togglePronoun = (selected) => {
+    const isSelected = formData.pronouns.includes(selected);
+    const updated = isSelected
+      ? formData.pronouns.filter((p) => p !== selected)
+      : [...formData.pronouns, selected];
+    setFormData({ ...formData, pronouns: updated });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('🔄 Datos actualizados:', formData);
 
     if (formData.newPassword && formData.newPassword !== formData.confirmNewPassword) {
       alert('Las contraseñas no coinciden');
@@ -45,19 +52,32 @@ const ProfilePage = () => {
     // Aquí irá la lógica de envío al backend
   };
 
+  const handleClose = () => {
+    navigate('/home');
+  };
+
   return (
     <div className={styles.formContainer}>
+      <button
+        className={styles.closeButton}
+        onClick={handleClose}
+        aria-label="Cerrar perfil y volver al inicio"
+        title="Cerrar"
+      >
+        <FaTimes />
+      </button>
+
       <form onSubmit={handleSubmit}>
         <h2 className={styles.title}>Editar Perfil</h2>
 
         <fieldset className={styles.pronounGroup}>
-          <legend className={styles.label}>Pronombre</legend>
+          <legend className={styles.label}>Pronombres</legend>
           {pronouns.map((p) => (
             <button
               key={p}
               type="button"
-              className={`${styles.pronounButton} ${formData.pronouns === p ? styles.selected : ''}`}
-              onClick={() => handlePronounSelect(p)}
+              className={`${styles.pronounButton} ${formData.pronouns.includes(p) ? styles.selected : ''}`}
+              onClick={() => togglePronoun(p)}
             >
               {p}
             </button>
@@ -74,7 +94,7 @@ const ProfilePage = () => {
         <input id="lastName" name="lastName" className={styles.input} value={formData.lastName} onChange={handleChange} />
 
         <label htmlFor="email" className={styles.label}>Email</label>
-        <input id="email" name="email" className={styles.input} value={formData.email} onChange={handleChange} type="email" />
+        <input id="email" name="email" type="email" className={styles.input} value={formData.email} onChange={handleChange} />
 
         <label htmlFor="location" className={styles.label}>Ubicación</label>
         <input id="location" name="location" className={styles.input} value={formData.location} onChange={handleChange} />

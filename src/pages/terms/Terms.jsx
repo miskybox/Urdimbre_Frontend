@@ -1,11 +1,28 @@
 import React from 'react';
 import MainLayout from '../../components/mainLayout/MainLayout';
 import styles from './Terms.module.css';
+import { useNavigate } from 'react-router-dom';
+import { FaTimes } from 'react-icons/fa';
 
 const Terms = () => {
+  const navigate = useNavigate();
+
+  const handleClose = () => {
+    navigate('/register');
+  };
+
   return (
     <MainLayout>
       <section className={styles.termsContainer}>
+        <button
+          className={styles.closeButton}
+          onClick={handleClose}
+          aria-label="Cerrar términos y volver al registro"
+          title="Cerrar"
+        >
+          <FaTimes />
+        </button>
+
         <h1>Términos y Condiciones de Uso</h1>
 
         <p>

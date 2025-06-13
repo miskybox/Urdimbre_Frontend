@@ -5,8 +5,8 @@ const authService = {
   async register(userData) {
     try {
       console.log('Enviando datos de registro:', userData)
-      // inviteCode ya debe estar incluido en userData si viene del formulario
-      const response = await api.post('/auth/register', userData)
+    
+    const response = await api.post('/auth/register', userData)
       return response.data
     } catch (error) {
       console.error('Error en registro:', error.response?.data || error.message)
