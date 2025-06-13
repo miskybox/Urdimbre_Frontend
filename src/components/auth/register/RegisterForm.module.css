@@ -179,3 +179,37 @@
   text-decoration: none;
 }
 
+@media screen and (min-width: 1200px) {
+  .Container {
+    max-width: 950px;
+    padding: 4rem 3rem;
+    margin: 4rem auto;
+  }
+
+  .title {
+    font-size: 3.2rem;
+    text-align: center;
+  }
+
+  .input {
+    font-size: 1.05rem;
+  }
+
+  .button {
+    font-size: 1.1rem;
+    padding: 1rem 2rem;
+  }
+
+  .toggleButton {
+    font-size: 1.2rem;
+    right: 2rem;
+  }
+
+  .hint {
+    font-size: 0.95rem;
+  }
+
+  .checkboxLabel {
+    font-size: 1rem;
+  }
+}
