@@ -1,3 +1,7 @@
+/* ===================================================
+   LoginForm.module.css - CÓDIGO COMPLETO CON VARIABLES Y NAVEGACIÓN
+   =================================================== */
+
 .formContainer {
   background: var(--bg-color);
   padding: 2rem;
@@ -19,6 +23,7 @@
   font-size: 1.5rem;
   font-weight: bold;
   margin-bottom: 1.5rem;
+  color: var(--text-color);
 }
 
 .label {
@@ -26,6 +31,7 @@
   text-align: left;
   margin: 0.5rem 0 0.25rem;
   font-weight: bold;
+  color: var(--text-color);
 }
 
 .passwordContainer {
@@ -42,10 +48,26 @@
   font-size: var(--font-size-base);
   outline: none;
   box-sizing: border-box;
+  background: var(--bg-color);
+  color: var(--text-color);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .input:focus {
   box-shadow: 0 0 0 3px rgba(106, 27, 154, 0.2);
+  border-color: var(--input-border);
+}
+
+.input::placeholder {
+  color: #999;
+  font-style: italic;
+}
+
+/* Estados de error para inputs */
+.inputError {
+  border-color: var(--error-color) !important;
+  background-color: var(--invalid-bg) !important;
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.1) !important;
 }
 
 .togglePassword {
@@ -57,13 +79,19 @@
   border: none;
   font-size: 1.4rem;
   cursor: pointer;
-  color: #6A1B9A;
+  color: var(--input-border);
   padding: 0;
   line-height: 1;
+  transition: color 0.2s ease;
 }
 
 .togglePassword:hover {
-  color: #4a0072;
+  color: var(--link-hover-color);
+}
+
+.togglePassword:focus {
+  outline: var(--focus-outline);
+  border-radius: 4px;
 }
 
 .hint {
@@ -74,13 +102,19 @@
   width: 90%;
   margin-left: auto;
   margin-right: auto;
+  line-height: 1.4;
 }
+
+/* ===================================================
+   BOTONES - ACTUALIZADOS PARA NAVEGACIÓN
+   =================================================== */
 
 .buttonContainer {
   display: flex;
   justify-content: space-between;
   gap: 1rem;
   margin-top: 1rem;
+  margin-bottom: 1rem; /* Espacio para el enlace de recuperación */
 }
 
 .button {
@@ -91,29 +125,86 @@
   font-size: 1rem;
   cursor: pointer;
   font-weight: bold;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
+  color: var(--text-color);
+  min-height: 48px; /* Altura mínima para mejor accesibilidad */
+  position: relative;
+  overflow: hidden;
 }
 
 .createButton {
   background-color: var(--primary-color);
+  color: white;
 }
 
-.createButton:hover {
-  background-color: #b194b4;
+.createButton:hover:not(:disabled) {
+  background-color: var(--primary-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .loginButton {
   background-color: var(--secondary-color);
 }
 
-.loginButton:hover {
-  background-color: #78bdec;
+.loginButton:hover:not(:disabled) {
+  background-color: var(--secondary-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
+
+.loginButton:disabled,
+.createButton:disabled {
+  background-color: var(--disabled-bg);
+  color: var(--disabled-text);
+  cursor: not-allowed;
+  opacity: 0.6;
+  transform: none;
+}
+
+.loginButton:disabled:hover,
+.createButton:disabled:hover {
+  background-color: var(--disabled-bg);
+  transform: none;
+}
+
+/* ===================================================
+   NUEVOS ESTILOS PARA NAVEGACIÓN MEJORADA
+   =================================================== */
 
 .textCenter {
   text-align: center;
   font-size: var(--font-size-sm);
-  margin-top: 1.5rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--input-border);
+}
+
+.forgotPassword {
+  background: none;
+  border: none;
+  color: var(--link-color);
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: inherit;
+  padding: 0;
+  margin-left: 0.5rem;
+  transition: color 0.2s ease;
+}
+
+.forgotPassword:hover {
+  text-decoration: none;
+  color: var(--link-hover-color);
+}
+
+.forgotPassword:focus {
+  outline: var(--focus-outline);
+  border-radius: 2px;
+}
+
+.forgotPassword:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .error {
@@ -124,4 +215,267 @@
   width: 90%;
   margin-left: auto;
   margin-right: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.error::before {
+  content: "❌";
+  font-size: 0.75rem;
+}
+
+/* ===================================================
+   NUEVOS ESTILOS PARA MANEJO DE ERRORES MEJORADO
+   =================================================== */
+
+/* Error de autenticación mejorado */
+.authError {
+  background: var(--auth-error-bg);
+  border: 2px solid var(--auth-error-border);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  color: var(--auth-error-text);
+  font-weight: 500;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(239, 68, 68, 0.1);
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ===================================================
+   ESTILOS PARA RECUPERACIÓN DE CONTRASEÑA
+   =================================================== */
+
+.recoveryDescription {
+  color: var(--text-color);
+  text-align: center;
+  margin-bottom: 2rem;
+  line-height: 1.5;
+  font-size: 1rem;
+}
+
+.recoveryForm {
+  width: 100%;
+}
+
+.recoveryButton {
+  background-color: var(--recovery-button-bg);
+  color: white;
+}
+
+.recoveryButton:hover:not(:disabled) {
+  background-color: var(--recovery-button-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.recoveryButton:disabled {
+  background-color: var(--disabled-bg);
+  cursor: not-allowed;
+  opacity: 0.6;
+  transform: none;
+}
+
+.recoveryButton:disabled:hover {
+  background-color: var(--disabled-bg);
+  transform: none;
+}
+
+.cancelButton {
+  background-color: var(--primary-color);
+  color: var(--text-color);
+}
+
+.cancelButton:hover:not(:disabled) {
+  background-color: var(--primary-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* ===================================================
+   INDICADOR DE INTENTOS
+   =================================================== */
+
+.attemptsWarning {
+  background: var(--warning-bg);
+  border: 2px solid var(--warning-border);
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  margin: 1rem auto;
+  color: var(--warning-text);
+  font-weight: 500;
+  text-align: center;
+  width: 90%;
+  box-shadow: 0 2px 4px rgba(245, 158, 11, 0.1);
+}
+
+.recoveryHint {
+  font-weight: normal;
+  font-style: italic;
+}
+
+.inlineRecoveryLink {
+  background: none;
+  border: none;
+  color: var(--link-color);
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: inherit;
+  font-style: normal;
+  padding: 0;
+  transition: color 0.2s ease;
+}
+
+.inlineRecoveryLink:hover {
+  text-decoration: none;
+  color: var(--link-hover-color);
+}
+
+.inlineRecoveryLink:focus {
+  outline: var(--focus-outline);
+  border-radius: 2px;
+}
+
+/* ===================================================
+   RESPONSIVE DESIGN
+   =================================================== */
+
+@media screen and (max-width: 480px) {
+  .formContainer {
+    margin: 1rem;
+    padding: 1.5rem;
+    max-width: calc(100% - 2rem);
+  }
+
+  .buttonContainer {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .button {
+    width: 100%;
+    margin: 0;
+  }
+
+  .logo {
+    width: 180px;
+    height: 135px;
+  }
+
+  .welcome {
+    font-size: 1.3rem;
+  }
+
+  .textCenter {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .formContainer {
+    max-width: 500px;
+    padding: 2.5rem;
+  }
+
+  .logo {
+    width: 240px;
+    height: 180px;
+  }
+
+  .welcome {
+    font-size: 1.7rem;
+  }
+
+  .input {
+    font-size: 1.1rem;
+    padding: 0.85rem 2.75rem 0.85rem 0.85rem;
+  }
+
+  .button {
+    font-size: 1.1rem;
+    padding: 0.85rem;
+  }
+
+  .togglePassword {
+    font-size: 1.5rem;
+    right: 1.75rem;
+  }
+
+  .authError {
+    font-size: 1.05rem;
+  }
+
+  .attemptsWarning {
+    font-size: 1rem;
+  }
+
+  .buttonContainer {
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+}
+
+
+.button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.button:hover::before {
+  left: 100%;
+}
+
+/* Estados de loading */
+
+.loginButton:disabled::after,
+.createButton:disabled::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
+  border: 2px solid transparent;
+  border-top: 2px solid currentColor;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* ===================================================
+   ACCESIBILIDAD
+   =================================================== */
+
+.button:focus,
+.input:focus,
+.forgotPassword:focus {
+  outline: 2px solid var(--link-color);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  .button:hover {
+    transform: none;
+  }
 }

@@ -6,17 +6,58 @@
   --text-color: #000000;
   --input-border: #6A1B9A;
   --error-color: #D32F2F;
-  
 
   --primary-color: #CBAACB; 
+  --primary-hover: #dfb6d3;
   --secondary-color: #94D0F5; 
+  --secondary-hover: #74bdf1;
+
+  --success-color: #10b981;
+  --warning-color: #f59e0b;
+  --danger-color: #ef4444;
 
   --font-size-base: 1rem;
   --font-size-sm: 0.875rem;
 
-  --focus-outline: 2px solid #6A1B9A;
+  --focus-outline: 2px solid var(--input-border);
 
   --hover-soft: #b287d2;
+  --accent-color: #b287d2;
+  --accent-hover-color: #9c6bc2;
+
+  /* ===== NUEVAS VARIABLES PARA MEJORAR EL MANEJO DE ERRORES ===== */
+  --link-color: #6A1B9A;
+  --link-hover-color: #4a0072;
+  
+  /* Colores para validación */
+  --valid-color: #10b981;
+  --valid-bg: #ecfdf5;
+  --valid-border: #10b981;
+  
+  --invalid-color: #ef4444;
+  --invalid-bg: #fef2f2;
+  --invalid-border: #ef4444;
+  
+  --validating-color: #f59e0b;
+  --validating-bg: #fffbeb;
+  --validating-border: #f59e0b;
+  
+  /* Estados de alerta */
+  --auth-error-bg: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+  --auth-error-border: #ef4444;
+  --auth-error-text: #dc2626;
+  
+  --warning-bg: linear-gradient(135deg, #fef3c7 0%, #fed7aa 100%);
+  --warning-border: #f59e0b;
+  --warning-text: #92400e;
+  
+  /* Botones deshabilitados */
+  --disabled-bg: #9ca3af;
+  --disabled-text: #6b7280;
+  
+  /* Recovery */
+  --recovery-button-bg: var(--accent-color);
+  --recovery-button-hover: var(--accent-hover-color);
 
   --font-family-base: 'Atkinson Hyperlegible', Arial, sans-serif;
 }
