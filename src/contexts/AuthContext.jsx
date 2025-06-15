@@ -21,6 +21,7 @@ export const AuthProvider = ({ children }) => {
       setCurrentUser(userData);
       setIsAuthenticated(true);
     } catch (error) {
+      console.error('Error during authentication initialization:', error);
       setCurrentUser(null);
       setIsAuthenticated(false);
       localStorage.removeItem('token');
@@ -31,12 +32,8 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const register = async (userData) => {
-    try {
-      const response = await authService.register(userData);
-      return response;
-    } catch (error) {
-      throw error;
-    }
+    const response = await authService.register(userData);
+    return response;
   };
 
   const login = async (credentials) => {
@@ -50,6 +47,7 @@ export const AuthProvider = ({ children }) => {
       setIsAuthenticated(true);
       return response;
     } catch (error) {
+      console.error('Error during login:', error);
       throw error;
     }
   };
@@ -58,6 +56,7 @@ export const AuthProvider = ({ children }) => {
     try {
       await authService.logout();
     } catch (error) {
+      console.error('Error during logout:', error);
     } finally {
       setCurrentUser(null);
       setIsAuthenticated(false);

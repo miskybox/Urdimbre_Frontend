@@ -1,3 +1,7 @@
+/* ===================================================
+   RegisterForm.module.css - CÓDIGO COMPLETO
+   =================================================== */
+
 .formContainer {
   background: var(--bg-color);
   border-radius: 1rem;
@@ -32,7 +36,7 @@
   border-radius: 0.5rem;
   font-size: var(--font-size-sm);
   outline: none;
-  transition: border 0.2s ease;
+  transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
   box-sizing: border-box;
 }
 
@@ -42,6 +46,7 @@
 
 .input::placeholder {
   color: #999;
+  font-style: italic;
 }
 
 .hint {
@@ -55,6 +60,14 @@
   color: var(--error-color);
   font-size: var(--font-size-base);
   margin-top: 0.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.error::before {
+  content: "❌";
+  font-size: 0.875rem;
 }
 
 .pronounGroup {
@@ -146,7 +159,6 @@
   background-color: #74bdf1;
 }
 
-
 .checkboxGroup {
   margin-top: 1.5rem;
   margin-bottom: 1.5rem;
@@ -179,8 +191,190 @@
   text-decoration: none;
 }
 
+/* ===================================================
+   ESTILOS PARA VALIDACIÓN DE CÓDIGO DE INVITACIÓN
+   =================================================== */
+
+/* Estados del input de código de invitación */
+.input.validating {
+  border-color: #f59e0b;
+  background-color: #fffbeb;
+  box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.1);
+}
+
+.input.valid {
+  border-color: #10b981;
+  background-color: #ecfdf5;
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.1);
+}
+
+.input.invalid {
+  border-color: #ef4444;
+  background-color: #fef2f2;
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.1);
+}
+
+/* Iconos de validación - ajustados a tu estructura */
+.validIcon,
+.invalidIcon {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1rem;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.validIcon {
+  color: #10b981;
+}
+
+.invalidIcon {
+  color: #ef4444;
+}
+
+/* Ajuste para inputs con iconos de validación */
+.inputGroup .validIcon,
+.inputGroup .invalidIcon {
+  right: 3.5rem; /* Espacio para el botón de toggle */
+}
+
+/* Texto de validación en curso */
+.validatingText {
+  color: #f59e0b;
+  font-size: 0.875rem;
+  font-style: italic;
+  margin-left: 0.5rem;
+}
+
+/* Mensaje de éxito - usando tu estructura de colores */
+.success {
+  color: #10b981;
+  font-size: var(--font-size-base);
+  margin-top: 0.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-weight: 500;
+}
+
+.success::before {
+  content: "✅";
+  font-size: 0.875rem;
+}
+
+/* Estado del botón cuando no se puede enviar */
+.createButton:disabled {
+  background-color: #9ca3af;
+  cursor: not-allowed;
+  opacity: 0.6;
+  transform: none;
+}
+
+.createButton:disabled:hover {
+  background-color: #9ca3af;
+  transform: none;
+}
+
+/* Animación de validación */
+.validating {
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+/* Estados hover para inputs de validación */
+.input.validating:hover {
+  border-color: #d97706;
+}
+
+.input.valid:hover {
+  border-color: #059669;
+}
+
+.input.invalid:hover {
+  border-color: #dc2626;
+}
+
+/* ===================================================
+   ESTILOS PARA PANTALLA DE ÉXITO
+   =================================================== */
+
+.successContainer {
+  text-align: center;
+  padding: 2rem;
+}
+
+.successIcon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  animation: bounce 1s ease-in-out;
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-20px);
+  }
+  60% {
+    transform: translateY(-10px);
+  }
+}
+
+.successTitle {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-color);
+  margin-bottom: 1rem;
+}
+
+.successMessage {
+  font-size: 1.2rem;
+  color: var(--text-color);
+  margin-bottom: 0.5rem;
+  line-height: 1.5;
+}
+
+.successSubtext {
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 2rem;
+  font-style: italic;
+}
+
+.successActions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.loginButton {
+  background-color: var(--secondary-color);
+  color: black;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.loginButton:hover {
+  background-color: #74bdf1;
+}
+
+/* ===================================================
+   RESPONSIVE DESIGN
+   =================================================== */
+
 @media screen and (min-width: 1200px) {
-  .Container {
+  .formContainer {
     max-width: 950px;
     padding: 4rem 3rem;
     margin: 4rem auto;
@@ -211,5 +405,38 @@
 
   .checkboxLabel {
     font-size: 1rem;
+  }
+
+  /* Ajustes para validación en pantallas grandes */
+  .validIcon,
+  .invalidIcon {
+    font-size: 1.1rem;
+    right: 1.2rem;
+  }
+
+  .inputGroup .validIcon,
+  .inputGroup .invalidIcon {
+    right: 4rem;
+  }
+
+  .validatingText {
+    font-size: 0.95rem;
+  }
+
+  .success,
+  .error {
+    font-size: 1rem;
+  }
+
+  .successIcon {
+    font-size: 5rem;
+  }
+
+  .successTitle {
+    font-size: 2.5rem;
+  }
+
+  .successMessage {
+    font-size: 1.4rem;
   }
 }
