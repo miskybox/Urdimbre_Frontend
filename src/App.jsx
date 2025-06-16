@@ -9,6 +9,7 @@ import UserManagementPage from "./pages/usermanagementpage/UserManagementPage";
 import Privacy from "./pages/privacy/Privacy";
 import Terms from "./pages/terms/Terms";
 import ProfilePage from "./pages/profile/ProfilePage";
+import ProfessionalsPage from "./pages/professionals/ProfessionalsPage";
 
 import "./App.css";
 
@@ -29,6 +30,7 @@ function App() {
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/terms" element={<Terms />} />
         <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/professionals" element={<ProfessionalsPage />} />
       </Routes>
     </div>
   );

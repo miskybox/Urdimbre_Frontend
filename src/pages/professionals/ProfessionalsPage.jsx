@@ -7,8 +7,13 @@ const ProfessionalsPage = () => {
   const [professionals, setProfessionals] = useState([]);
 
   useEffect(() => {
-    fetch("api/professionals")
-      .then((res) => res.json())
+    fetch("/api/professionals")
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`Error HTTP: ${res.status}`);
+        }
+        return res.json();
+      })
       .then((data) => setProfessionals(data))
       .catch((err) => console.error("Error loading professionals:", err));
   }, []);

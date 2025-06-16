@@ -1,5 +1,5 @@
-import ClassDetail from '../../components/classDetail/ClassDetail';
-import styles from './ClassDetailPage.module.css';
+import ClassDetail from "../../components/classDetail/ClassDetail";
+import styles from "./ClassDetailPage.module.css";
 
 const ClassDetailPage = () => {
   return (
