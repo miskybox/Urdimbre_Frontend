@@ -25,11 +25,11 @@
   --accent-color: #b287d2;
   --accent-hover-color: #9c6bc2;
 
-  /* ===== NUEVAS VARIABLES PARA MEJORAR EL MANEJO DE ERRORES ===== */
+  
   --link-color: #6A1B9A;
   --link-hover-color: #4a0072;
   
-  /* Colores para validación */
+  
   --valid-color: #10b981;
   --valid-bg: #ecfdf5;
   --valid-border: #10b981;
@@ -42,7 +42,7 @@
   --validating-bg: #fffbeb;
   --validating-border: #f59e0b;
   
-  /* Estados de alerta */
+  
   --auth-error-bg: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
   --auth-error-border: #ef4444;
   --auth-error-text: #dc2626;
@@ -51,11 +51,11 @@
   --warning-border: #f59e0b;
   --warning-text: #92400e;
   
-  /* Botones deshabilitados */
+  
   --disabled-bg: #9ca3af;
   --disabled-text: #6b7280;
   
-  /* Recovery */
+  
   --recovery-button-bg: var(--accent-color);
   --recovery-button-hover: var(--accent-hover-color);
 

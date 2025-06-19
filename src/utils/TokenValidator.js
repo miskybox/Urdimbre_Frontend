@@ -1,13 +1,7 @@
-// src/utils/TokenValidator.js - VERSIÓN PRODUCCIÓN
-/**
- * 🔍 TokenValidator - Validación de tokens JWT
- * Responsabilidad única: Solo validar tokens (sin side effects)
- */
+
 export class TokenValidator {
   
-  /**
-   * Valida si un string tiene formato JWT válido
-   */
+  
   static isValidJWT(token) {
     if (!token || typeof token !== 'string') {
       return false;
@@ -19,14 +13,13 @@ export class TokenValidator {
         return false;
       }
 
-      // Verificar que se puede decodificar el payload
       const payload = JSON.parse(atob(parts[1]));
       
-      // Verificar campos mínimos requeridos
+     
       return Boolean(payload.sub && payload.exp && payload.iat);
       
     } catch (error) {
-      // En producción, no mostrar errores de validación
+  
       if (import.meta.env.DEV) {
         console.warn('Error validando JWT:', error.message);
       }
@@ -34,9 +27,7 @@ export class TokenValidator {
     }
   }
 
-  /**
-   * Verifica si un token JWT está expirado
-   */
+  
   static isTokenExpired(token) {
     if (!this.isValidJWT(token)) {
       return true;
@@ -46,7 +37,7 @@ export class TokenValidator {
       const parts = token.split('.');
       const payload = JSON.parse(atob(parts[1]));
       
-      // exp está en segundos, Date.now() en milisegundos
+     
       const isExpired = payload.exp * 1000 < Date.now();
       
       if (import.meta.env.DEV && isExpired) {
@@ -63,9 +54,7 @@ export class TokenValidator {
     }
   }
 
-  /**
-   * Extrae el payload de un token JWT
-   */
+  
   static getTokenPayload(token) {
     if (!this.isValidJWT(token)) {
       return null;
@@ -82,9 +71,7 @@ export class TokenValidator {
     }
   }
 
-  /**
-   * Obtiene el tiempo restante de un token en milisegundos
-   */
+  
   static getTimeToExpiry(token) {
     const payload = this.getTokenPayload(token);
     if (!payload) return 0;
@@ -92,9 +79,7 @@ export class TokenValidator {
     return Math.max(0, (payload.exp * 1000) - Date.now());
   }
 
-  /**
-   * Verifica si un token expira pronto (en los próximos 5 minutos)
-   */
+  
   static willExpireSoon(token, minutesThreshold = 5) {
     const timeToExpiry = this.getTimeToExpiry(token);
     return timeToExpiry > 0 && timeToExpiry < (minutesThreshold * 60 * 1000);

@@ -1,13 +1,6 @@
-// src/utils/ErrorHandler.js
-/**
- * 🚨 ErrorHandler - Manejo centralizado de errores
- * Responsabilidad única: Convertir errores técnicos en mensajes amigables
- */
+
 export class ErrorHandler {
-  
-  /**
-   * Maneja errores de autenticación (login/register)
-   */
+
   static handleAuthError(error) {
     const status = error.response?.status;
     const message = error.response?.data?.message || '';
@@ -104,17 +97,11 @@ export class ErrorHandler {
     }
   }
 
-  /**
-   * Determina si un error requiere cerrar sesión
-   */
   static shouldLogout(error) {
     const status = error.response?.status;
     return status === 401 || status === 403;
   }
 
-  /**
-   * Determina si un error es temporal (reintentar)
-   */
   static isTemporaryError(error) {
     const status = error.response?.status;
     return status === 429 || status >= 500 || !error.response;
