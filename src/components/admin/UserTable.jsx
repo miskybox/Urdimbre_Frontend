@@ -1,30 +1,50 @@
 import { useEffect, useState } from 'react';
 import styles from './UserTable.module.css';
-import useAuth from '../../hooks/useAuth';
+import api from '../../config/api';
 
 const UserTable = () => {
-
-  const user = { role: 'admin' };
-
   const [users, setUsers] = useState([]);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
-  
+    const fetchUsers = async () => {
+      try {
+        const response = await api.get('/users'); // ✅ tu backend responde en /api/users y ya está configurado el baseURL
+        setUsers(response.data); // ✅ se espera un array de objetos tipo UserResponseDTO
+      } catch (err) {
+        console.error('❌ Error cargando usuaries:', err?.response?.data || err.message);
+        setError(true);
+      }
+    };
 
-    const mockUsers = [
-      { id: 1, firstName: "Alex", lastName: "Rivera", email: "alex@mail.com", role: "user" },
-      { id: 2, firstName: "Sam", lastName: "López", email: "sam@mail.com", role: "organizador" },
-      { id: 3, firstName: "Jess", lastName: "Martínez", email: "jess@mail.com", role: "admin" }
-    ];
-
-    setUsers(mockUsers);
+    fetchUsers();
   }, []);
 
   const handleRoleChange = (userId, newRole) => {
-      setUsers((prev) =>
-      prev.map((u) => (u.id === userId ? { ...u, role: newRole } : u))
+    setUsers((prev) =>
+      prev.map((u) =>
+        u.id === userId ? { ...u, roles: [newRole] } : u
+      )
     );
   };
+
+  if (error) {
+    return (
+      <div className={styles.formContainer}>
+        <h2 className={styles.title}>Gestión de usuaries</h2>
+        <p className={styles.error}>No se pudieron cargar les usuaries.</p>
+      </div>
+    );
+  }
+
+  if (!users.length) {
+    return (
+      <div className={styles.formContainer}>
+        <h2 className={styles.title}>Gestión de usuaries</h2>
+        <p className={styles.loading}>Cargando usuaries...</p>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.formContainer}>
@@ -38,13 +58,13 @@ const UserTable = () => {
           </tr>
         </thead>
         <tbody>
-          {Array.isArray(users) && users.map((u) => (
+          {users.map((u) => (
             <tr key={u.id}>
-              <td className={styles.hint}>{u.firstName} {u.lastName}</td>
+              <td className={styles.hint}>{u.fullName || u.username}</td>
               <td className={styles.hint}>{u.email}</td>
               <td>
                 <select
-                  value={u.role}
+                  value={u.roles[0]}
                   onChange={(e) => handleRoleChange(u.id, e.target.value)}
                   className={styles.input}
                 >
