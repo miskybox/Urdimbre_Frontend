@@ -1,6 +1,4 @@
-/* ===================================================
-   LoginForm.module.css - CÓDIGO COMPLETO CON VARIABLES Y NAVEGACIÓN
-   =================================================== */
+
 
 .formContainer {
   background: var(--bg-color);
@@ -105,16 +103,13 @@
   line-height: 1.4;
 }
 
-/* ===================================================
-   BOTONES - ACTUALIZADOS PARA NAVEGACIÓN
-   =================================================== */
 
 .buttonContainer {
   display: flex;
   justify-content: space-between;
   gap: 1rem;
   margin-top: 1rem;
-  margin-bottom: 1rem; /* Espacio para el enlace de recuperación */
+  margin-bottom: 1rem; 
 }
 
 .button {
@@ -122,19 +117,21 @@
   padding: 0.75rem;
   border: none;
   border-radius: 12px;
-  font-size: 1rem;
+  font-size: 1.2rem;
   cursor: pointer;
   font-weight: bold;
   transition: all 0.3s ease;
   color: var(--text-color);
-  min-height: 48px; /* Altura mínima para mejor accesibilidad */
+  min-height: 40px; 
   position: relative;
   overflow: hidden;
+  white-space: nowrap;
+
 }
 
 .createButton {
   background-color: var(--primary-color);
-  color: white;
+  color: var(--text-color);
 }
 
 .createButton:hover:not(:disabled) {
@@ -168,9 +165,7 @@
   transform: none;
 }
 
-/* ===================================================
-   NUEVOS ESTILOS PARA NAVEGACIÓN MEJORADA
-   =================================================== */
+
 
 .textCenter {
   text-align: center;
@@ -186,7 +181,7 @@
   color: var(--link-color);
   text-decoration: underline;
   cursor: pointer;
-  font-size: inherit;
+  font-size: 1.2rem;
   padding: 0;
   margin-left: 0.5rem;
   transition: color 0.2s ease;
@@ -225,11 +220,7 @@
   font-size: 0.75rem;
 }
 
-/* ===================================================
-   NUEVOS ESTILOS PARA MANEJO DE ERRORES MEJORADO
-   =================================================== */
 
-/* Error de autenticación mejorado */
 .authError {
   background: var(--auth-error-bg);
   border: 2px solid var(--auth-error-border);
@@ -245,9 +236,6 @@
   margin-right: auto;
 }
 
-/* ===================================================
-   ESTILOS PARA RECUPERACIÓN DE CONTRASEÑA
-   =================================================== */
 
 .recoveryDescription {
   color: var(--text-color);
@@ -295,9 +283,7 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* ===================================================
-   INDICADOR DE INTENTOS
-   =================================================== */
+
 
 .attemptsWarning {
   background: var(--warning-bg);
@@ -339,41 +325,6 @@
   border-radius: 2px;
 }
 
-/* ===================================================
-   RESPONSIVE DESIGN
-   =================================================== */
-
-@media screen and (max-width: 480px) {
-  .formContainer {
-    margin: 1rem;
-    padding: 1.5rem;
-    max-width: calc(100% - 2rem);
-  }
-
-  .buttonContainer {
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-
-  .button {
-    width: 100%;
-    margin: 0;
-  }
-
-  .logo {
-    width: 180px;
-    height: 135px;
-  }
-
-  .welcome {
-    font-size: 1.3rem;
-  }
-
-  .textCenter {
-    margin-top: 1.5rem;
-    padding-top: 1.5rem;
-  }
-}
 
 @media screen and (min-width: 768px) {
   .formContainer {
@@ -435,7 +386,7 @@
   left: 100%;
 }
 
-/* Estados de loading */
+
 
 .loginButton:disabled::after,
 .createButton:disabled::after {
@@ -457,9 +408,6 @@
   100% { transform: rotate(360deg); }
 }
 
-/* ===================================================
-   ACCESIBILIDAD
-   =================================================== */
 
 .button:focus,
 .input:focus,

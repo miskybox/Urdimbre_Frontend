@@ -41,7 +41,6 @@ const LoginForm = () => {
     }
   }, [loginAttempts]);
 
-  // ✅ FUNCIONES DE VALIDACIÓN INDIVIDUAL
   const validateUsername = (username) => {
     if (!username.trim()) return 'El nombre de usuarie es obligatorio';
     if (username.length < 3) return 'Mínimo 3 caracteres';
@@ -60,38 +59,23 @@ const LoginForm = () => {
     return '';
   };
 
-  // ✅ VALIDACIÓN EN TIEMPO REAL
   const validateField = useCallback((fieldName, value) => {
     let error = '';
-    
     switch (fieldName) {
-      case 'username':
-        error = validateUsername(value);
-        break;
-      case 'password':
-        error = validatePassword(value);
-        break;
-      case 'email':
-        error = validateEmail(value);
-        break;
-      default:
-        break;
+      case 'username': return validateUsername(value);
+      case 'password': return validatePassword(value);
+      case 'email': return validateEmail(value);
+      default: return '';
     }
-
-    return error;
   }, []);
 
-  // ✅ MANEJAR BLUR
   const handleBlur = (fieldName) => {
     setFieldTouched(prev => ({ ...prev, [fieldName]: true }));
-    
-    const fieldValue = fieldName === 'email' ? recoveryEmail : formData[fieldName];
-    const error = validateField(fieldName, fieldValue);
-    
+    const value = fieldName === 'email' ? recoveryEmail : formData[fieldName];
+    const error = validateField(fieldName, value);
     setErrors(prev => ({ ...prev, [fieldName]: error }));
   };
 
-  // ✅ VALIDACIÓN MIENTRAS ESCRIBE
   const handleRealTimeValidation = (fieldName, value) => {
     if (fieldTouched[fieldName]) {
       const error = validateField(fieldName, value);
@@ -99,7 +83,6 @@ const LoginForm = () => {
     }
   };
 
-  // ✅ FUNCIÓN PARA DETERMINAR SI MOSTRAR ERROR
   const shouldShowError = (fieldName) => {
     return fieldTouched[fieldName] && errors[fieldName];
   };
@@ -108,13 +91,8 @@ const LoginForm = () => {
     const { name, value } = e.target;
     const sanitizedValue = value.replace(/[<>"']/g, '');
     setFormData({ ...formData, [name]: sanitizedValue });
-    
     handleRealTimeValidation(name, sanitizedValue);
-    
-    // Limpiar errores de autenticación cuando el usuario empiece a escribir
-    if (errors.auth) {
-      setErrors(prev => ({ ...prev, auth: '' }));
-    }
+    if (errors.auth) setErrors(prev => ({ ...prev, auth: '' }));
   };
 
   const handleRecoveryEmailChange = (e) => {
@@ -125,24 +103,15 @@ const LoginForm = () => {
 
   const validateForm = () => {
     const newErrors = {};
-
-    Object.keys(formData).forEach(fieldName => {
-      const fieldValue = formData[fieldName];
-      const error = validateField(fieldName, fieldValue);
-      if (error) newErrors[fieldName] = error;
-    });
-
-    const allFieldsTouched = {};
     Object.keys(formData).forEach(field => {
-      allFieldsTouched[field] = true;
+      const error = validateField(field, formData[field]);
+      if (error) newErrors[field] = error;
     });
-    setFieldTouched(allFieldsTouched);
-
+    setFieldTouched({ username: true, password: true });
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  // ✅ RECUPERACIÓN DE CONTRASEÑA
   const handlePasswordRecovery = async () => {
     const emailError = validateEmail(recoveryEmail);
     if (emailError) {
@@ -150,9 +119,7 @@ const LoginForm = () => {
       setFieldTouched(prev => ({ ...prev, email: true }));
       return;
     }
-
     setIsRecovering(true);
-
     try {
       const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api'}/auth/forgot-password`, {
         method: 'POST',
@@ -161,21 +128,17 @@ const LoginForm = () => {
       });
 
       if (response.ok) {
-        toast.success(`📧 Hemos enviado un enlace de recuperación a ${recoveryEmail}. Revisa tu bandeja de entrada.`, { duration: 6000 });
+        toast.success(`📧 Enlace enviado a ${recoveryEmail}. Revisa tu correo.`, { duration: 6000 });
         setShowRecovery(false);
         setRecoveryEmail('');
         setErrors(prev => ({ ...prev, email: '' }));
       } else {
         const data = await response.json();
-        if (response.status === 404) {
-          toast.error('No encontramos una cuenta con ese email. ¿Estás seguro que es el correcto?');
-        } else {
-          toast.error(data.message || 'Error al enviar el enlace de recuperación');
-        }
+        if (response.status === 404) toast.error('No encontramos una cuenta con ese email.');
+        else toast.error(data.message || 'Error al enviar el enlace.');
       }
     } catch (error) {
-      console.error('Error en recuperación:', error);
-      toast.error('Error de conexión. Verifica tu internet e inténtalo de nuevo.');
+      toast.error('Error de conexión. Intenta de nuevo.');
     } finally {
       setIsRecovering(false);
     }
@@ -184,9 +147,7 @@ const LoginForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm() || cooldown) return;
-
     setIsSubmitting(true);
-
     try {
       const response = await login(formData);
       toast.success(`¡Bienvenide de vuelta, ${response.username || formData.username}! 🎉`);
@@ -194,30 +155,36 @@ const LoginForm = () => {
     } catch (error) {
       setLoginAttempts(prev => prev + 1);
       const status = error.response?.status;
-
-      if (status === 401) {
-        setErrors({ auth: 'Nombre de usuarie o contraseña incorrectos' });
-        toast.error('❌ Credenciales incorrectas. Verifica tu nombre de usuarie y contraseña.');
-      } else if (status === 400) {
-        setErrors({ auth: 'Completa todos los campos correctamente' });
-        toast.error('❌ Completa todos los campos correctamente.');
-      } else if (status === 403) {
-        setErrors({ auth: 'Acceso denegado. Tu cuenta podría estar inactiva.' });
-        toast.error('🚫 Acceso denegado. Contacta con soporte si el problema persiste.');
-      } else if (status === 429) {
-        setErrors({ auth: 'Demasiados intentos. Espera un momento.' });
-        toast.error('⏳ Demasiados intentos. Espera un momento antes de volver a intentar.');
-      } else if (status >= 500) {
-        setErrors({ auth: 'Error del servidor. Inténtalo más tarde.' });
-        toast.error('🛠️ Servidor temporalmente inestable. Inténtalo en unos momentos.');
-      } else {
-        setErrors({ auth: 'Error inesperado al iniciar sesión' });
-        toast.error('❓ Error inesperado. Inténtalo de nuevo.');
+      let message = 'Error inesperado';
+      switch (status) {
+        case 401:
+          message = 'Credenciales incorrectas';
+          setErrors({ auth: 'Nombre de usuarie o contraseña incorrectos' });
+          break;
+        case 400:
+          message = 'Completa todos los campos correctamente';
+          break;
+        case 403:
+          message = 'Acceso denegado';
+          break;
+        case 429:
+          message = 'Demasiados intentos';
+          break;
+        case 500:
+          message = 'Servidor inestable';
+          break;
       }
+      toast.error(message);
     } finally {
       setIsSubmitting(false);
     }
   };
+
+  const loginButtonText = isSubmitting
+    ? 'Iniciando...'
+    : cooldown
+    ? 'Esperando...'
+    : 'Iniciar Sesión';
 
   if (showRecovery) {
     return (
@@ -270,19 +237,11 @@ const LoginForm = () => {
     );
   }
 
-  // Extracted button text to avoid nested ternary
-  let loginButtonText = 'Iniciar Sesión';
-  if (isSubmitting) {
-    loginButtonText = 'Iniciando...';
-  } else if (cooldown) {
-    loginButtonText = 'Esperando...';
-  }
-
   return (
     <div className={styles.formContainer}>
       <img src="/logo/urdimbreLogo.png" alt="Logo de Urdimbre" className={styles.logo} />
       <h2 className={styles.welcome}>¡Bienvenide, estás en casa!</h2>
-      
+
       <form onSubmit={handleSubmit} autoComplete="off">
         {errors.auth && <div className={styles.authError}>{errors.auth}</div>}
 
@@ -331,27 +290,15 @@ const LoginForm = () => {
 
         <p className={styles.hint}>
           <span>Introduce tu contraseña. </span>
-          <button 
-            type="button" 
-            className={styles.forgotPassword}
-            onClick={() => setShowRecovery(true)}
-          >
-            ¿Olvidaste tu contraseña?
-          </button>
         </p>
         {shouldShowError('password') && <p className={styles.error}>{errors.password}</p>}
 
-        {/* ✅ INDICADOR DE INTENTOS */}
         {loginAttempts > 0 && (
           <div className={styles.attemptsWarning}>
             ⚠️ Intentos fallidos: {loginAttempts}/5
             {loginAttempts >= 3 && (
               <span className={styles.recoveryHint}>
-                {' '}- <button 
-                  type="button" 
-                  className={styles.inlineRecoveryLink}
-                  onClick={() => setShowRecovery(true)}
-                >
+                {' '} - <button type="button" className={styles.inlineRecoveryLink} onClick={() => setShowRecovery(true)}>
                   ¿Recuperar contraseña?
                 </button>
               </span>
@@ -359,16 +306,7 @@ const LoginForm = () => {
           </div>
         )}
 
-        {/* ✅ BOTONES PRINCIPALES - LADO A LADO */}
         <div className={styles.buttonContainer}>
-          <button
-            type="submit"
-            className={`${styles.button} ${styles.loginButton}`}
-            disabled={isSubmitting || cooldown}
-          >
-            {loginButtonText}
-          </button>
-          
           <button
             type="button"
             className={`${styles.button} ${styles.createButton}`}
@@ -377,16 +315,17 @@ const LoginForm = () => {
           >
             Crear Cuenta
           </button>
+          <button
+            type="submit"
+            className={`${styles.button} ${styles.loginButton}`}
+            disabled={isSubmitting || cooldown}
+          >
+            {loginButtonText}
+          </button>
         </div>
 
-        {/* ✅ ENLACE DE RECUPERACIÓN DEBAJO */}
         <div className={styles.textCenter}>
-          <button 
-            type="button" 
-            className={styles.forgotPassword}
-            onClick={() => setShowRecovery(true)}
-            disabled={isSubmitting}
-          >
+          <button type="button" className={styles.forgotPassword} onClick={() => setShowRecovery(true)} disabled={isSubmitting}>
             ¿Has olvidado tu contraseña?
           </button>
         </div>

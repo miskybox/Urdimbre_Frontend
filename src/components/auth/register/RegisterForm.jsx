@@ -764,7 +764,9 @@ const RegisterForm = () => {
               onChange={handleChange}
               onBlur={() => handleBlur('acceptPrivacy')}
             />
-            He leído y acepto la <Link to="/privacy" target="_blank" rel="noopener noreferrer">política de privacidad</Link>.
+            He leído y acepto la <a href="/privacy" target="_blank" rel="noopener noreferrer">
+           política de privacida </a>
+
           </label>
           {shouldShowError('acceptPrivacy') && <p className={styles.error}>{errors.acceptPrivacy}</p>}
 
@@ -776,7 +778,10 @@ const RegisterForm = () => {
               onChange={handleChange}
               onBlur={() => handleBlur('acceptTerms')}
             />
-            Acepto los <Link to="/terms" target="_blank" rel="noopener noreferrer">términos y condiciones</Link>.
+            Acepto los <a href="/terms" target="_blank"  rel="noopener noreferrer" className={styles.footerLink}>
+            Términos y condiciones
+</a>
+
           </label>
           {shouldShowError('acceptTerms') && <p className={styles.error}>{errors.acceptTerms}</p>}
         </div>

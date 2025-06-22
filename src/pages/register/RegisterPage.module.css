@@ -38,12 +38,15 @@
 .footer {
   margin-top: 2rem;
   text-align: center;
+  font-size: 1.3rem;
+  
+
 }
 
 .footer a {
   color: var(--input-border);
   text-decoration: none;
-  font-weight: 500;
+
 }
 
 .footer a:hover {

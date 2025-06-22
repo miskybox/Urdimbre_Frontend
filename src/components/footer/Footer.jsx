@@ -17,9 +17,10 @@ const Footer = () => {
         <div className={styles.footerText}>
           <p>© 2025 <strong>Urdimbre™</strong>. Todos los derechos reservados.</p>
           <p>
-            <Link to="/privacy" className={styles.footerLink}>
-              Política de privacidad
-            </Link>
+          <a href="/privacy" target="_blank" rel="noopener noreferrer" className={styles.footerLink}>
+          Política de privacidad
+         </a>
+
           </p>
         </div>
       </div>

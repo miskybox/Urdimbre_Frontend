@@ -398,55 +398,7 @@
   background-color: var(--secondary-hover);
 }
 
-/* ===================================================
-   RESPONSIVE DESIGN
-   =================================================== */
 
-@media screen and (max-width: 480px) {
-  .formContainer {
-    margin: 1rem;
-    padding: 1.5rem;
-    max-width: calc(100% - 2rem);
-  }
-
-  .title {
-    font-size: 2rem;
-  }
-
-  .pronounGroup {
-    gap: 0.25rem;
-  }
-
-  .pronounButton {
-    flex: 1 1 45%;
-    padding: 0.4rem;
-    font-size: 0.9rem;
-  }
-
-  .buttonContainer {
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-
-  .button {
-    flex: 1 1 100%;
-  }
-
-  .checkboxLabel {
-    font-size: 0.9rem;
-  }
-
-  .validIcon,
-  .invalidIcon {
-    font-size: 0.9rem;
-    right: 0.75rem;
-  }
-
-  .inputGroup .validIcon,
-  .inputGroup .invalidIcon {
-    right: 3rem;
-  }
-}
 
 @media screen and (min-width: 768px) and (max-width: 1199px) {
   .formContainer {
