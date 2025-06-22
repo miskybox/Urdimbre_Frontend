@@ -1,139 +1,75 @@
-
-import axios from "axios";
+import axios from 'axios';
 import { TokenStorage } from '../utils/TokenStorage.js';
 import { TokenValidator } from '../utils/TokenValidator.js';
+import authService from '../services/authService.js';
 
-const BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8080/api";
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080/api';
 
-
-const api = axios.create({
-  baseURL: BASE_URL,
-  timeout: 10000,
+const apiInstance = axios.create({
+  baseURL: API_BASE_URL,
   headers: {
-    "Content-Type": "application/json",
+    'Content-Type': 'application/json',
   },
 });
 
-api.interceptors.request.use(
-  (config) => {
-    
+apiInstance.interceptors.request.use(
+  async (config) => {
     const token = TokenStorage.getAccessToken();
-    
 
     if (token && TokenValidator.isValidJWT(token) && !TokenValidator.isTokenExpired(token)) {
-      config.headers["Authorization"] = `Bearer ${token}`;
+      config.headers.Authorization = `Bearer ${token}`;
     }
-    
 
-    if (import.meta.env.DEV) {
-      console.log(`🌐 ${config.method?.toUpperCase()} ${config.url}`, 
-        config.data ? { data: config.data } : '');
-    }
-    
     return config;
   },
-  (error) => {
-    
-    if (import.meta.env.DEV) {
-      console.error('❌ Request interceptor error:', error);
-    }
-    return Promise.reject(error instanceof Error ? error : new Error(String(error)));
-  }
+  (error) => Promise.reject(error)
 );
 
-
-api.interceptors.response.use(
-  (response) => {
-   
-    if (import.meta.env.DEV) {
-      console.log(`✅ ${response.config.method?.toUpperCase()} ${response.config.url} - ${response.status}`);
-    }
-    return response;
-  },
+apiInstance.interceptors.response.use(
+  (response) => response,
   async (error) => {
     const originalRequest = error.config;
 
-    if (import.meta.env.DEV) {
-      console.error(`❌ ${error.config?.method?.toUpperCase()} ${error.config?.url} - ${error.response?.status}`);
-    }
-
-    if (shouldAttemptTokenRefresh(error, originalRequest)) {
+    if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
+
       try {
-        const accessToken = await attemptTokenRefresh();
-        originalRequest.headers["Authorization"] = `Bearer ${accessToken}`;
-        if (import.meta.env.DEV) {
-          console.log('✅ Token renovado, reintentando request original');
-        }
-        return api(originalRequest);
+        await authService.refreshToken();
+        const newToken = TokenStorage.getAccessToken();
+        originalRequest.headers.Authorization = `Bearer ${newToken}`;
+        return apiInstance(originalRequest);
       } catch (refreshError) {
-        handleRefreshError(refreshError);
-        return Promise.reject(refreshError instanceof Error ? refreshError : new Error(String(refreshError)));
+        TokenStorage.clearTokens();
+        window.location.href = '/login';
+        return Promise.reject(refreshError);
       }
     }
 
-    return Promise.reject(error instanceof Error ? error : new Error(String(error)));
+    return Promise.reject(error);
   }
 );
 
+const api = {
+  get: (url, config = {}) => apiInstance.get(url, config).then((res) => res.data),
+  post: (url, data, config = {}) => apiInstance.post(url, data, config).then((res) => res.data),
+  put: (url, data, config = {}) => apiInstance.put(url, data, config).then((res) => res.data),
+  delete: (url, config = {}) => apiInstance.delete(url, config).then((res) => res.data),
 
-function shouldAttemptTokenRefresh(error, originalRequest) {
-  return error.response?.status === 401 && !originalRequest._retry;
-}
+  updateUserRoles: (userId, rolesArray) => {
+    if (!Array.isArray(rolesArray)) {
+      throw new Error('El parámetro roles debe ser un array');
+    }
 
+    return apiInstance
+      .put(`/users/${userId}/roles`, { roles: rolesArray })
+      .then((res) => res.data);
+  },
 
-async function attemptTokenRefresh() {
-  if (import.meta.env.DEV) {
-    console.log('🔄 Token expirado, intentando renovar...');
-  }
-  const refreshToken = TokenStorage.getRefreshToken();
-  if (!refreshToken || !TokenValidator.isValidJWT(refreshToken) || TokenValidator.isTokenExpired(refreshToken)) {
-    throw new Error("No hay refresh token válido disponible");
-  }
-  const response = await axios.post(`${BASE_URL}/auth/refresh`, { refreshToken });
-  const { accessToken, refreshToken: newRefreshToken } = response.data;
-  if (!TokenValidator.isValidJWT(accessToken) || !TokenValidator.isValidJWT(newRefreshToken)) {
-    throw new Error("Tokens recibidos son inválidos");
-  }
-  TokenStorage.saveTokens(accessToken, newRefreshToken);
-  return accessToken;
-}
-
-
-function handleRefreshError(refreshError) {
-  if (import.meta.env.DEV) {
-    console.error('❌ Error al renovar token:', refreshError);
-  }
-  TokenStorage.clearTokens();
-  const publicPaths = ['/login', '/register', '/', '/terms', '/privacy'];
-  if (!publicPaths.includes(window.location.pathname)) {
-    setTimeout(() => {
-      window.location.href = "/login";
-    }, 100);
-  }
-}
-
-
-api.createDirectRequest = (config) => {
-  return axios.create({
-    baseURL: BASE_URL,
-    timeout: 10000,
-    headers: { "Content-Type": "application/json" },
-    ...config
-  });
+  createDirectRequest: () =>
+    axios.create({
+      baseURL: API_BASE_URL,
+      headers: { 'Content-Type': 'application/json' },
+    }),
 };
-
-
-if (import.meta.env.DEV) {
-  window.api = api;
-  window.apiConfig = {
-    baseURL: BASE_URL,
-    timeout: 10000
-  };
-  
-  console.log('🔧 API Client - Utilidades de desarrollo:');
-  console.log('   • window.api - Instancia de Axios');
-  console.log('   • window.apiConfig - Configuración actual');
-}
 
 export default api;

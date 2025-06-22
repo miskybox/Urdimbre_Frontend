@@ -5,14 +5,15 @@ import api from '../../config/api';
 const UserTable = () => {
   const [users, setUsers] = useState([]);
   const [error, setError] = useState(false);
+  const [message, setMessage] = useState('');
 
+  // 🔁 Obtener usuaries al cargar el componente
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await api.get('/users'); // ✅ tu backend responde en /api/users y ya está configurado el baseURL
-        setUsers(response.data); // ✅ se espera un array de objetos tipo UserResponseDTO
-      } catch (err) {
-        console.error('❌ Error cargando usuaries:', err?.response?.data || err.message);
+        const response = await api.get('/users');
+        setUsers(response);
+      } catch {
         setError(true);
       }
     };
@@ -20,12 +21,20 @@ const UserTable = () => {
     fetchUsers();
   }, []);
 
-  const handleRoleChange = (userId, newRole) => {
-    setUsers((prev) =>
-      prev.map((u) =>
-        u.id === userId ? { ...u, roles: [newRole] } : u
-      )
-    );
+  // 🔄 Manejar cambio de rol
+  const handleRoleChange = async (userId, newRole) => {
+    const newRoles = [newRole];
+    try {
+      await api.updateUserRoles(userId, newRoles);
+      setUsers(prev => 
+        prev.map(u => (u.id === userId ? { ...u, roles: newRoles } : u))
+      );
+      setMessage('✅ Cambio de rol realizado con éxito');
+      setTimeout(() => setMessage(''), 3000);
+    } catch {
+      setMessage('❌ Error al actualizar el rol');
+      setTimeout(() => setMessage(''), 3000);
+    }
   };
 
   if (error) {
@@ -37,7 +46,7 @@ const UserTable = () => {
     );
   }
 
-  if (!users.length) {
+  if (!Array.isArray(users) || !users.length) {
     return (
       <div className={styles.formContainer}>
         <h2 className={styles.title}>Gestión de usuaries</h2>
@@ -49,6 +58,7 @@ const UserTable = () => {
   return (
     <div className={styles.formContainer}>
       <h2 className={styles.title}>Gestión de usuaries</h2>
+      {message && <p className={message.startsWith('✅') ? styles.success : styles.error}>{message}</p>}
       <table className={styles.table}>
         <thead>
           <tr>
@@ -58,19 +68,21 @@ const UserTable = () => {
           </tr>
         </thead>
         <tbody>
-          {users.map((u) => (
+          {users.map(u => (
             <tr key={u.id}>
-              <td className={styles.hint}>{u.fullName || u.username}</td>
+              <td className={styles.hint}>
+                {`${u.firstName || ''} ${u.lastName || ''}`.trim() || u.username}
+              </td>
               <td className={styles.hint}>{u.email}</td>
               <td>
                 <select
                   value={u.roles[0]}
-                  onChange={(e) => handleRoleChange(u.id, e.target.value)}
+                  onChange={e => handleRoleChange(u.id, e.target.value)}
                   className={styles.input}
                 >
-                  <option value="user">User</option>
-                  <option value="organizador">Organizadore</option>
-                  <option value="admin">Admin</option>
+                  <option value="ROLE_USER">User</option>
+                  <option value="ROLE_ORGANIZER">Organizadore</option>
+                  <option value="ROLE_ADMIN">Admin</option>
                 </select>
               </td>
             </tr>
