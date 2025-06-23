@@ -1,6 +1,6 @@
 # Urdimbre\_Frontend 💻
 
-![Estado: en desarrollo](https://img.shields.io/badge/estado-en_desarrollo-yellow)  ![Licencia: MIT](https://img.shields.io/badge/licencia-MIT-blue)  ![Build Status](https://github.com/tu-usuario/Urdimbre_Frontend/actions/workflows/ci.yml/badge.svg)
+![Estado: en desarrollo] ![Licencia: MIT](https://img.shields.io/badge/licencia-MIT-blue)  ![Build Status](https://github.com/tu-usuario/Urdimbre_Frontend/actions/workflows/ci.yml/badge.svg)
 
 
 
@@ -95,7 +95,6 @@ Ejecuta las pruebas:
 npm run test    # ó yarn test
 ```
 
-![Dashboard UI](assets/image2.png)
 
 ## 🤝 Contribución
 
