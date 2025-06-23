@@ -27,7 +27,6 @@ const RegisterForm = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [registrationSuccess, setRegistrationSuccess] = useState(false);
 
-  // Estado para validación de código de invitación
   const [inviteCodeStatus, setInviteCodeStatus] = useState({
     isValidating: false,
     isValid: null,
@@ -38,7 +37,7 @@ const RegisterForm = () => {
   const { register, isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
-  // ✅ LIMPIEZA AUTOMÁTICA AL MONTAR EL COMPONENTE
+ 
   useEffect(() => {
     setErrors({});
     setFieldTouched({});
@@ -75,7 +74,7 @@ const RegisterForm = () => {
     };
   }, [isAuthenticated, navigate]);
 
-  // Funciones de validación individual
+ 
   const validatePronouns = (pronouns) => {
     if (!pronouns.length) return 'Selecciona al menos un pronombre';
     return '';
@@ -129,7 +128,7 @@ const RegisterForm = () => {
     };
   };
 
-  // ✅ FUNCIÓN MEJORADA PARA VERIFICAR DISPONIBILIDAD DE USERNAME
+  
   const checkUsernameAvailability = useCallback(async (username) => {
     if (!username || username.length < 3) return;
     
@@ -144,7 +143,7 @@ const RegisterForm = () => {
           setErrors(prev => ({ ...prev, username: '' }));
         }
       } else {
-        // Si hay error en la verificación, no mostrar error al usuario
+       
         console.warn('Error verificando disponibilidad de username');
       }
     } catch (error) {
@@ -152,7 +151,7 @@ const RegisterForm = () => {
     }
   }, []);
 
-  // ✅ FUNCIÓN MEJORADA PARA VERIFICAR DISPONIBILIDAD DE EMAIL
+ 
   const checkEmailAvailability = useCallback(async (email) => {
     if (!email || !/^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(email)) return;
     
@@ -174,7 +173,7 @@ const RegisterForm = () => {
     }
   }, []);
 
-  // Debounce para verificar username y email
+ 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       if (formData.username && fieldTouched.username) {
@@ -279,7 +278,7 @@ const RegisterForm = () => {
     }
   };
 
-  // Función para validar código de invitación en tiempo real
+  
   const validateInviteCode = useCallback(async (code) => {
     if (!code || code.trim().length < 3) {
       setInviteCodeStatus({
@@ -343,7 +342,7 @@ const RegisterForm = () => {
     
     setFormData({ ...formData, [name]: fieldValue });
     
-    // Limpiar errores del backend cuando el usuario modifica el campo
+    
     if (errors[name] && (name === 'username' || name === 'email')) {
       setErrors(prev => ({ ...prev, [name]: '' }));
     }
@@ -383,8 +382,6 @@ const RegisterForm = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  // ✅ MANEJO DE ERRORES MEJORADO
-  // Helper functions for error handling
   const handleTooManyRequests = (error) => {
     const retryAfter = error.response?.headers?.['retry-after'];
     let message = 'Demasiados intentos de registro. ';

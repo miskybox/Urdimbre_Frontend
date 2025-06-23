@@ -6,8 +6,7 @@ const UserTable = () => {
   const [users, setUsers] = useState([]);
   const [error, setError] = useState(false);
   const [message, setMessage] = useState('');
-
-  // 🔁 Obtener usuaries al cargar el componente
+ 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -21,7 +20,7 @@ const UserTable = () => {
     fetchUsers();
   }, []);
 
-  // 🔄 Manejar cambio de rol
+ 
   const handleRoleChange = async (userId, newRole) => {
     const newRoles = [newRole];
     try {

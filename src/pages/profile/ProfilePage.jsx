@@ -49,7 +49,6 @@ const ProfilePage = () => {
       return;
     }
 
-    // Aquí irá la lógica de envío al backend
   };
 
   const handleClose = () => {

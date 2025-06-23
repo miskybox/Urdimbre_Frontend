@@ -1,14 +1,9 @@
 import api from '../config/api.js';
 import { ErrorHandler } from '../utils/ErrorHandler.js';
 
-/**
- * 🎭 ActivityService - Gestión de actividades (crear, listar, etc.)
- * Responsabilidad única: Comunicación con el backend para actividades
- */
+
 class ActivityService {
-  /**
-   * Crea una nueva actividad (requiere autenticación)
-   */
+  
   async createActivity(activityData) {
     try {
       if (import.meta.env.DEV) {
@@ -36,9 +31,6 @@ class ActivityService {
     }
   }
 
-  /**
-   * Obtiene todas las actividades disponibles (público)
-   */
   async getAllActivities() {
     try {
       const response = await api.get('/activities');
@@ -49,9 +41,7 @@ class ActivityService {
     }
   }
 
-  /**
-   * Obtiene una actividad por su ID
-   */
+ 
   async getActivityById(activityId) {
     try {
       const response = await api.get(`/activities/${activityId}`);
@@ -62,9 +52,6 @@ class ActivityService {
     }
   }
 
-  /**
-   * Elimina una actividad (solo creador o admin)
-   */
   async deleteActivity(id) {
     try {
       const response = await api.delete(`/activities/${id}`);
@@ -75,9 +62,6 @@ class ActivityService {
     }
   }
 
-  /**
-   * Actualiza una actividad (solo creador o admin)
-   */
   async updateActivity(id, updatedData) {
     try {
       const response = await api.put(`/activities/${id}`, updatedData);
@@ -89,10 +73,8 @@ class ActivityService {
   }
 }
 
-// Instancia única
 const activityService = new ActivityService();
 
-// Desarrollo: acceso por consola
 if (import.meta.env.DEV) {
   window.activityService = activityService;
   console.log('🔧 ActivityService Clean - Acceso disponible por consola');

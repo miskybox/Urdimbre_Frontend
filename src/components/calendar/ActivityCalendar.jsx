@@ -1,4 +1,4 @@
-// ActivityCalendar.jsx
+
 import { useState, useEffect, useCallback } from 'react';
 import styles from './ActivityCalendar.module.css';
 
@@ -247,7 +247,7 @@ const ActivityCalendar = () => {
   }, [handleActivityClick]);
 
   const handleReserveClass = useCallback((activityId) => {
-    // Update reservation status
+    
     setReservationStatus(prev => ({
       ...prev,
       [activityId]: 'processing'
@@ -352,7 +352,7 @@ const ActivityCalendar = () => {
 
   return (
     <div className={styles.container}>
-      {/* Header */}
+  
       <header className={styles.header}>
         <button className={styles.backButton}>
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -365,7 +365,6 @@ const ActivityCalendar = () => {
         </div>
       </header>
 
-      {/* Filters */}
       <div className={styles.filtersContainer}>
         <button className={styles.filtersButton}>
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
@@ -397,7 +396,6 @@ const ActivityCalendar = () => {
         </div>
       </div>
 
-      {/* Weekly calendar */}
       <div className={styles.weeklyCalendar}>
         {weekDays.map((day) => (
           <button
@@ -430,7 +428,7 @@ const ActivityCalendar = () => {
         </button>
       </div>
 
-      {/* Expandable Full Calendar */}
+     
       {isCalendarExpanded && (
         <div className={styles.fullCalendar}>
           <div className={styles.calendarHeader}>
@@ -477,7 +475,7 @@ const ActivityCalendar = () => {
         </div>
       )}
 
-      {/* Selected date */}
+      
       <div className={styles.selectedDate}>
         <h2>{formatSelectedDate(selectedDate)}</h2>
         {currentActivities.length > 0 && (
@@ -487,7 +485,7 @@ const ActivityCalendar = () => {
         )}
       </div>
 
-      {/* Activities list */}
+     
       <div className={styles.activitiesList}>
         {filteredActivities.length > 0 ? (
           filteredActivities.map((activity) => (
@@ -533,7 +531,7 @@ const ActivityCalendar = () => {
         )}
       </div>
 
-      {/* Activity Detail Modal */}
+
       {showActivityModal && selectedActivity && (
         <div 
           className={styles.modalOverlay} 
@@ -545,7 +543,7 @@ const ActivityCalendar = () => {
           tabIndex={-1}
         >
           <div className={styles.activityModal} onClick={(e) => e.stopPropagation()}>
-            {/* Header with background image */}
+           
             <div className={styles.modalHeader}>
               <button className={styles.modalBackButton} onClick={handleCloseModal}>
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -558,7 +556,7 @@ const ActivityCalendar = () => {
               </div>
             </div>
 
-            {/* Content */}
+          
             <div className={styles.modalContent}>
               <div className={styles.modalClassHeader}>
                 <h1 id="modal-title" className={styles.modalClassTitle}>{selectedActivity.title}</h1>
@@ -571,7 +569,7 @@ const ActivityCalendar = () => {
                 {isActivityReserved(selectedActivity.id) ? 'Reservado' : 'Disponible para reservar'}
               </p>
 
-              {/* Schedule section */}
+             
               <div className={styles.modalSection}>
                 <h3 className={styles.modalSectionTitle}>Cronograma</h3>
                 <div className={styles.modalScheduleInfo}>
@@ -602,7 +600,7 @@ const ActivityCalendar = () => {
                 </div>
               </div>
 
-              {/* Location section */}
+              
               <div className={styles.modalSection}>
                 <h3 className={styles.modalSectionTitle}>Ubicación</h3>
                 <div className={styles.modalLocationInfo}>
@@ -616,19 +614,17 @@ const ActivityCalendar = () => {
                 </div>
               </div>
 
-              {/* Instructor section */}
               <div className={styles.modalSection}>
                 <h3 className={styles.modalSectionTitle}>Instructor</h3>
                 <p className={styles.modalInstructorName}>{selectedActivity.instructor}</p>
               </div>
 
-              {/* Description section */}
+    
               <div className={styles.modalSection}>
                 <h3 className={styles.modalSectionTitle}>Descripción de la clase</h3>
                 <p className={styles.modalDescription}>{selectedActivity.description}</p>
               </div>
 
-              {/* Reservation Status or Button */}
               {reservationStatus[selectedActivity.id] === 'confirmed' ? (
                 <div className={styles.confirmationContent}>
                   <div className={styles.successIcon}>

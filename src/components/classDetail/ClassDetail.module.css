@@ -1,4 +1,4 @@
-/* ClassDetail.module.css */
+
 
 .container {
   min-height: 100vh;
@@ -6,7 +6,7 @@
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
 }
 
-/* Header with image */
+
 .header {
   position: relative;
   height: 250px;
@@ -56,7 +56,7 @@
   background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent);
 }
 
-/* Class card */
+
 .classCard {
   background: white;
   margin: -20px 16px 16px;
@@ -132,7 +132,7 @@
   margin: 0 0 24px 0;
 }
 
-/* Sections */
+
 .section {
   margin-bottom: 24px;
   padding-bottom: 20px;
@@ -151,7 +151,6 @@
   margin: 0 0 12px 0;
 }
 
-/* Schedule section */
 .scheduleInfo {
   display: flex;
   align-items: center;
@@ -225,7 +224,7 @@
   background-color: #e9ecef;
 }
 
-/* Location section */
+
 .locationInfo {
   display: flex;
   justify-content: space-between;
@@ -255,7 +254,7 @@
   background-color: #e9ecef;
 }
 
-/* Instructor section */
+
 .instructorName {
   font-size: 16px;
   color: #212529;
@@ -263,7 +262,6 @@
   margin: 0;
 }
 
-/* Description section */
 .description {
   font-size: 14px;
   color: #495057;
@@ -271,7 +269,6 @@
   margin: 0;
 }
 
-/* Reserve section */
 .reserveSection {
   padding: 16px;
   background: white;
@@ -303,7 +300,6 @@
   cursor: not-allowed;
 }
 
-/* Modal */
 .modalOverlay {
   position: fixed;
   top: 0;
@@ -339,7 +335,7 @@
   }
 }
 
-/* Loading content */
+
 .loadingContent {
   display: flex;
   flex-direction: column;
@@ -361,7 +357,7 @@
   100% { transform: rotate(360deg); }
 }
 
-/* Confirmation content */
+
 .confirmationContent {
   display: flex;
   flex-direction: column;
@@ -425,7 +421,6 @@
   background: #000;
 }
 
-/* Responsive - Desktop */
 @media (min-width: 768px) {
   .container {
     max-width: 600px;

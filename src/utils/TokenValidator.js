@@ -21,7 +21,7 @@ export class TokenValidator {
     } catch (error) {
   
       if (import.meta.env.DEV) {
-        console.warn('Error validando JWT:', error.message);
+        
       }
       return false;
     }
@@ -41,14 +41,14 @@ export class TokenValidator {
       const isExpired = payload.exp * 1000 < Date.now();
       
       if (import.meta.env.DEV && isExpired) {
-        console.warn('Token expirado:', new Date(payload.exp * 1000));
+       
       }
       
       return isExpired;
       
     } catch (error) {
       if (import.meta.env.DEV) {
-        console.error('Error verificando expiración:', error.message);
+       
       }
       return true;
     }
@@ -65,7 +65,7 @@ export class TokenValidator {
       return JSON.parse(atob(parts[1]));
     } catch (error) {
       if (import.meta.env.DEV) {
-        console.error('Error extrayendo payload:', error.message);
+       
       }
       return null;
     }

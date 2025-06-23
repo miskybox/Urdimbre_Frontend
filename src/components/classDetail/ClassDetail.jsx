@@ -1,4 +1,4 @@
-// ClassDetail.jsx
+
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styles from './ClassDetail.module.css';
@@ -70,7 +70,7 @@ const ClassDetail = () => {
         </div>
       </div>
 
-      {/* Class info card */}
+     
       <div className={styles.classCard}>
         <div className={styles.classHeader}>
           <h1 className={styles.classTitle}>{classData.title}</h1>
@@ -84,7 +84,6 @@ const ClassDetail = () => {
 
         <p className={styles.classStatus}>{classData.status}</p>
 
-        {/* Schedule section */}
         <div className={styles.section}>
           <h3 className={styles.sectionTitle}>Cronograma</h3>
           <div className={styles.scheduleInfo}>
@@ -115,7 +114,6 @@ const ClassDetail = () => {
           </div>
         </div>
 
-        {/* Location section */}
         <div className={styles.section}>
           <h3 className={styles.sectionTitle}>Ubicación</h3>
           <div className={styles.locationInfo}>
@@ -129,20 +127,18 @@ const ClassDetail = () => {
           </div>
         </div>
 
-        {/* Instructor section */}
+   
         <div className={styles.section}>
           <h3 className={styles.sectionTitle}>Instructor</h3>
           <p className={styles.instructorName}>{classData.instructor}</p>
         </div>
 
-        {/* Description section */}
         <div className={styles.section}>
           <h3 className={styles.sectionTitle}>Descripción de la clase</h3>
           <p className={styles.description}>{classData.description}</p>
         </div>
       </div>
 
-      {/* Reserve button */}
       <div className={styles.reserveSection}>
         <button 
           className={styles.reserveButton}
@@ -153,7 +149,6 @@ const ClassDetail = () => {
         </button>
       </div>
 
-      {/* Reservation Modal */}
       {showReservationModal && (
         <div className={styles.modalOverlay} onClick={handleCloseModal}>
           <div className={styles.modal} onClick={(e) => e.stopPropagation()}>

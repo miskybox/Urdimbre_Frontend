@@ -60,7 +60,6 @@ export class ErrorHandler {
         }
     }
 
-    // Combinar errores del backend si existen
     const backendErrors = errorData.errors || {};
     fieldErrors = { ...fieldErrors, ...backendErrors };
 
@@ -71,9 +70,6 @@ export class ErrorHandler {
     };
   }
 
-  /**
-   * Maneja errores de API generales
-   */
   static handleApiError(error, context = 'operación') {
     const status = error.response?.status;
     const message = error.response?.data?.message || '';
