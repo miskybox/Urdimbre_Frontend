@@ -1,24 +1,14 @@
-<!-- Logo opcional -->
-
-<p align="center">
-  <img src="https://github.com/tu-usuario/Urdimbre_Frontend/assets/logo.png" alt="Urdimbre Logo" width="120" />
-</p>
-
 # Urdimbre\_Frontend 💻
 
-<p align="center">
-  <a href="https://img.shields.io/badge/estado-en_desarrollo-yellow"><img src="https://img.shields.io/badge/estado-en_desarrollo-yellow" alt="Estado"></a>
-  <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/licencia-MIT-blue" alt="Licencia"></a>
-  <a href="https://github.com/tu-usuario/Urdimbre_Frontend/actions"><img src="https://github.com/tu-usuario/Urdimbre_Frontend/workflows/CI/badge.svg" alt="Build Status"></a>
-</p>
+![Estado: en desarrollo](https://img.shields.io/badge/estado-en_desarrollo-yellow)  ![Licencia: MIT](https://img.shields.io/badge/licencia-MIT-blue)  ![Build Status](https://github.com/tu-usuario/Urdimbre_Frontend/actions/workflows/ci.yml/badge.svg)
 
-<p align="center">
-  <img src="https://github.com/tu-usuario/Urdimbre_Frontend/assets/landing_page.png" alt="Pantalla principal" width="80%" />
-</p>
+![Logo Urdimbre](assets/logo-urdimbre-final.png)
 
 ## 📖 Descripción
 
 **Urdimbre\_Frontend** es la interfaz web oficial de la asociación Urdimbre, construida con **React 18**, **Vite**, **JSX** y **CSS Modules**. Permite a usuarios trans, no binarios e intersex interactuar con la plataforma: registrarse, iniciar sesión, consultar eventos y gestionar su perfil.
+
+![Pantalla principal](assets/image1.png)
 
 ## ✨ Características principales
 
@@ -56,9 +46,7 @@
 2. Instala dependencias:
 
    ```bash
-   npm install
-   # o
-   yarn install
+   npm install    # ó yarn install
    ```
 3. Configura la URL de la API en `.env`:
 
@@ -68,21 +56,13 @@
 4. Inicia en modo desarrollo:
 
    ```bash
-   npm run dev
-   # o
-   yarn dev
+   npm run dev    # ó yarn dev
    ```
-5. Accede en tu navegador:
-
-   ```text
-   http://localhost:5173
-   ```
+5. Abre tu navegador en `http://localhost:5173`
 6. Para producción:
 
    ```bash
-   npm run build
-   # o
-   yarn build
+   npm run build  # ó yarn build
    ```
 
 ## 📁 Estructura del proyecto
@@ -109,35 +89,30 @@ Urdimbre_Frontend/
 
 ## 🧪 Pruebas
 
-Ejecuta las pruebas con:
+Ejecuta las pruebas:
 
 ```bash
-npm run test
-# o
-yarn test
+npm run test    # ó yarn test
 ```
 
-
-<p align="center">
-  <img src="https://github.com/tu-usuario/Urdimbre_Frontend/assets/dashboard_screenshot.png" alt="Dashboard UI" width="80%" />
-</p>
+![Dashboard UI](assets/image2.png)
 
 ## 🤝 Contribución
 
 1. Haz un fork del proyecto.
-2. Crea una rama:
+2. Crea una rama y muévete a ella:
 
    ```bash
-   git checkout -b feature/nombre-funcionalidad
+   git checkout -b feature/mi-nueva-funcionalidad
    ```
 3. Realiza cambios y commitea:
 
    ```bash
-   git commit -m "Descripción del cambio"
+   git commit -m "Descripción de mi cambio"
    ```
-4. Envía un pull request.
+4. Empuja tu rama y abre un Pull Request.
 
-> Por favor, añade pruebas para nuevos componentes y sigue las reglas de ESLint.
+Por favor, añade pruebas para nuevos componentes y sigue las reglas de ESLint.
 
 ## 👥 Equipo de desarrollo
 
@@ -149,12 +124,5 @@ yarn test
 
 ## 📄 Licencia MIT
 
-MIT License
+Este proyecto utiliza la [Licencia MIT](https://opensource.org/licenses/MIT).
 
-Copyright (c) 2025 Urdimbre
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
