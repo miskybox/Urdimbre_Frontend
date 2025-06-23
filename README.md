@@ -1,6 +1,6 @@
 # Urdimbre\_Frontend 💻
 
-![Estado: en desarrollo] ![Licencia: MIT] ![Build Status](https://github.com/tu-usuario/Urdimbre_Frontend/actions/workflows/ci.yml/badge.svg)
+![Estado: en desarrollo] ![Licencia: MIT] 
 
 
 
