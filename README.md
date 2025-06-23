@@ -2,13 +2,13 @@
 
 ![Estado: en desarrollo](https://img.shields.io/badge/estado-en_desarrollo-yellow)  ![Licencia: MIT](https://img.shields.io/badge/licencia-MIT-blue)  ![Build Status](https://github.com/tu-usuario/Urdimbre_Frontend/actions/workflows/ci.yml/badge.svg)
 
-![Logo Urdimbre](assets/logo-urdimbre-final.png)
+
 
 ## 📖 Descripción
 
 **Urdimbre\_Frontend** es la interfaz web oficial de la asociación Urdimbre, construida con **React 18**, **Vite**, **JSX** y **CSS Modules**. Permite a usuarios trans, no binarios e intersex interactuar con la plataforma: registrarse, iniciar sesión, consultar eventos y gestionar su perfil.
 
-![Pantalla principal](assets/image1.png)
+
 
 ## ✨ Características principales
 
